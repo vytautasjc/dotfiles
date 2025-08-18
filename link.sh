@@ -21,4 +21,9 @@ ln -sf $SCRIPT_DIR/zsh/prompt.zsh $XDG_CONFIG_HOME/zsh/prompt.zsh
 ### MISC
 
 touch $HOME/.hushlogin
+
+### GIT
+
+mkdir -p $XDG_CONFIG_HOME/git
+ln -sf $SCRIPT_DIR/git/.gitignore_global $XDG_CONFIG_HOME/git/.gitignore_global
 git config --global core.excludesfile $XDG_CONFIG_HOME/git/.gitignore_global
