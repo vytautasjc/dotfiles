@@ -1,6 +1,6 @@
 # SSH
 
-ssh-add ~/.ssh/id_25519_github
+ssh-add ~/.ssh/id_ed25519_github
 
 # Homebrew
 
