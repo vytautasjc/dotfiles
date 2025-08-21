@@ -75,7 +75,7 @@ git_prompt_status() {
   fi
 
   if [[ ! -z "$STATUS" ]]; then
-    echo " [ $STATUS]"
+    echo "[$STATUS]"
   fi
 }
 
@@ -107,19 +107,19 @@ prompt_setup() {
     ZSH_THEME_GIT_PROMPT_DIRTY=""
     ZSH_THEME_GIT_PROMPT_CLEAN=""
 
-    ZSH_THEME_GIT_PROMPT_ADDED="%F{green}+%f "
-    ZSH_THEME_GIT_PROMPT_MODIFIED="%F{blue}%f "
-    ZSH_THEME_GIT_PROMPT_DELETED="%F{red}x%f "
-    ZSH_THEME_GIT_PROMPT_RENAMED="%F{magenta}➜%f "
-    ZSH_THEME_GIT_PROMPT_UNMERGED="%F{yellow}═%f "
-    ZSH_THEME_GIT_PROMPT_UNTRACKED="%F{white}%f "
-    ZSH_THEME_GIT_PROMPT_STASHED="%B%F{red}%f%b "
-    ZSH_THEME_GIT_PROMPT_BEHIND="%B%F{red}%f%b "
-    ZSH_THEME_GIT_PROMPT_AHEAD="%B%F{green}%f%b "
+    ZSH_THEME_GIT_PROMPT_ADDED="%F{green}added%f"
+    ZSH_THEME_GIT_PROMPT_MODIFIED="%F{blue}modified%f"
+    ZSH_THEME_GIT_PROMPT_DELETED="%F{red}deleted%f"
+    ZSH_THEME_GIT_PROMPT_RENAMED="%F{magenta}renamed%f"
+    ZSH_THEME_GIT_PROMPT_UNMERGED="%F{yellow}unmerged%f"
+    ZSH_THEME_GIT_PROMPT_UNTRACKED="%F{white}untracked%f"
+    ZSH_THEME_GIT_PROMPT_STASHED="%B%F{red}stashed%f%b"
+    ZSH_THEME_GIT_PROMPT_BEHIND="%B%F{red}behind%f%b"
+    ZSH_THEME_GIT_PROMPT_AHEAD="%B%F{green}ahead%f%b"
 
     prompt_git_branch
     RPROMPT='$(prompt_git_info) $(git_prompt_status)'
-    PROMPT=$'%F{white}%~ %B%F{blue}>%f%b '
+    PROMPT=$'%F{blue}%B%~%b%f > '
 }
 
 prompt_setup
