@@ -1,6 +1,5 @@
 export PATH="$PATH:$HOME/bin"
 
-
 setopt AUTO_CD                          # Go to folder path without using cd.
 
 setopt AUTO_PUSHD                       # Push the old directory onto the stack on cd.
@@ -11,6 +10,7 @@ setopt CORRECT                          # Spelling correction
 setopt CDABLE_VARS                      # Change directory to a path stored in a variable.
 setopt EXTENDED_GLOB                    # Use extended globbing syntax.
 
-source $DOTFILES/zsh/history.zsh
-source $DOTFILES/zsh/autocomplete.zsh
-source $DOTFILES/zsh/prompt.zsh
+source $XDG_CONFIG_HOME/zsh/history.zsh
+source $XDG_CONFIG_HOME/zsh/autocomplete.zsh
+source $XDG_CONFIG_HOME/zsh/prompt.zsh
+source $XDG_CONFIG_HOME/.aliases
