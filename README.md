@@ -28,5 +28,7 @@ To ensure SSH keys are loaded automatically and authenticated by the macOS keych
 Clone this repository and symlink the relevant files to your home directory:
 
 ```sh
-./link.sh
+make all
+make zshrc
+make git
 ```
