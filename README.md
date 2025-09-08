@@ -9,7 +9,6 @@ To ensure SSH keys are loaded automatically and authenticated by the macOS keych
    - Example:
      ```sh
      ssh-add --apple-use-keychain ~/.ssh/id_ed25519_github &>/dev/null
-     ssh-add --apple-use-keychain ~/.ssh/id_ed25519_gitlab &>/dev/null
      ```
 2. **Configure your SSH keys in `~/.ssh/config`**
    - Example:
@@ -28,7 +27,10 @@ To ensure SSH keys are loaded automatically and authenticated by the macOS keych
 Clone this repository and symlink the relevant files to your home directory:
 
 ```sh
-make all
-make zshrc
-make git
+make setup-all
+make setup-zshrc setup-git
 ```
+
+## To-Do
+- [ ] Use Stow
+- [ ] Automate specific ssh key loading via zprofile (e.g. from ~/.ssh/autoload/*)
