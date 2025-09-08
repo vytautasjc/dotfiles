@@ -2,7 +2,7 @@ CURRENT_DIR = $(shell cd -- "$(dirname -- "${BASH_SOURCE[0]}")" &>/dev/null && p
 
 all: zsh git
 
-zsh: prepare
+zsh:
 	touch ${HOME}/.hushlogin
 	mkdir -p $(XDG_CONFIG_HOME)
 
