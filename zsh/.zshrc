@@ -1,5 +1,3 @@
-export PATH="$PATH:$HOME/bin"
-
 setopt AUTO_CD                          # Go to folder path without using cd.
 
 setopt AUTO_PUSHD                       # Push the old directory onto the stack on cd.
