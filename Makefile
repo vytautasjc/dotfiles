@@ -1,12 +1,11 @@
 CURRENT_DIR = $(shell cd -- "$(dirname -- "${BASH_SOURCE[0]}")" &>/dev/null && pwd -P)
 
-prepare:
+all: zsh git
+
+zsh: prepare
 	touch ${HOME}/.hushlogin
 	mkdir -p $(XDG_CONFIG_HOME)
 
-all: zshrc git
-
-zshrc: prepare
 	ln -sf $(CURRENT_DIR)/zsh/.zshenv $(HOME)/.zshenv
 
 	. ${HOME}/.zshenv
@@ -20,7 +19,7 @@ zshrc: prepare
 	ln -sf $(CURRENT_DIR)/zsh/prompt.zsh $(XDG_CONFIG_HOME)/zsh/prompt.zsh
 	ln -sf $(CURRENT_DIR)/zsh/history.zsh $(XDG_CONFIG_HOME)/zsh/history.zsh
 
-git: prepare
+git: zsh
 	mkdir -p $(XDG_CONFIG_HOME)/git
 
 	ln -sf $(CURRENT_DIR)/git/.gitignore_global $(XDG_CONFIG_HOME)/git/.gitignore_global
