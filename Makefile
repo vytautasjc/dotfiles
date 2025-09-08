@@ -19,6 +19,8 @@ setup-zsh:
 	ln -sf $(CURRENT_DIR)/zsh/prompt.zsh ${XDG_CONFIG_HOME}/zsh/prompt.zsh
 	ln -sf $(CURRENT_DIR)/zsh/history.zsh ${XDG_CONFIG_HOME}/zsh/history.zsh
 
+	. ${XDG_CONFIG_HOME}/zsh/.zshrc
+
 setup-git: setup-zsh
 	mkdir -p ${XDG_CONFIG_HOME}/git
 
