@@ -55,6 +55,7 @@ precmd() {
 
 preexec() {
     timer=$(($(print -P %D{%s%6.})/1000))
+    print ""
 }
 
 prompt_git_branch() {
@@ -81,7 +82,7 @@ prompt_setup() {
     NEWLINE=$'\n'
 
     RPROMPT=""
-    PROMPT='$(path_label) $(vcs_label)${NEWLINE}%n > '
+    PROMPT='$(path_label) $(vcs_label)${NEWLINE}%F{153}%n > %f'
 }
 
 prompt_setup
