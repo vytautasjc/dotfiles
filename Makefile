@@ -3,12 +3,12 @@ CURRENT_DIR = $(shell cd -- "$(dirname -- "${BASH_SOURCE[0]}")" &>/dev/null && p
 all: zsh git
 
 zsh:
-	touch ${HOME}/.hushlogin
-	mkdir -p $(XDG_CONFIG_HOME)
-
 	ln -sf $(CURRENT_DIR)/zsh/.zshenv $(HOME)/.zshenv
 
 	. ${HOME}/.zshenv
+
+	touch ${HOME}/.hushlogin
+	mkdir -p $(XDG_CONFIG_HOME)
 
 	mkdir -p $(XDG_CONFIG_HOME)/zsh
 
