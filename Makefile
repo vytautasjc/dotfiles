@@ -1,8 +1,8 @@
 CURRENT_DIR = $(shell cd -- "$(dirname -- "${BASH_SOURCE[0]}")" &>/dev/null && pwd -P)
 
-all: zsh git
+setup-all: setup-zsh setup-git
 
-zsh:
+setup-zsh:
 	ln -sf $(CURRENT_DIR)/zsh/.zshenv $(HOME)/.zshenv
 
 	. ${HOME}/.zshenv
@@ -19,7 +19,7 @@ zsh:
 	ln -sf $(CURRENT_DIR)/zsh/prompt.zsh $(XDG_CONFIG_HOME)/zsh/prompt.zsh
 	ln -sf $(CURRENT_DIR)/zsh/history.zsh $(XDG_CONFIG_HOME)/zsh/history.zsh
 
-git: zsh
+setup-zsh: setup_zsh
 	mkdir -p $(XDG_CONFIG_HOME)/git
 
 	ln -sf $(CURRENT_DIR)/git/.gitignore_global $(XDG_CONFIG_HOME)/git/.gitignore_global
