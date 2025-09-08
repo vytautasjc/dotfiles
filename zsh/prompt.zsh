@@ -32,7 +32,7 @@ prompt_setup() {
     NEWLINE=$'\n'
 
     RPROMPT=""
-    PROMPT='$(path_label) $(vcs_label)${NEWLINE}> '
+    PROMPT='$(path_label) $(vcs_label)${NEWLINE}%n > '
 }
 
 prompt_setup
