@@ -11,4 +11,6 @@ setopt EXTENDED_GLOB                    # Use extended globbing syntax.
 source $XDG_CONFIG_HOME/zsh/history.zsh
 source $XDG_CONFIG_HOME/zsh/autocomplete.zsh
 source $XDG_CONFIG_HOME/zsh/prompt.zsh
+source $XDG_CONFIG_HOME/zsh/node.zsh
+
 source $XDG_CONFIG_HOME/.aliases

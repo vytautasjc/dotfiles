@@ -22,6 +22,7 @@ setup-zsh:
 	ln -sf $(CURRENT_DIR)/zsh/autocomplete.zsh $(XDG_CONFIG_HOME)/zsh/autocomplete.zsh
 	ln -sf $(CURRENT_DIR)/zsh/prompt.zsh $(XDG_CONFIG_HOME)/zsh/prompt.zsh
 	ln -sf $(CURRENT_DIR)/zsh/history.zsh $(XDG_CONFIG_HOME)/zsh/history.zsh
+	ln -sf $(CURRENT_DIR)/zsh/node.zsh $(XDG_CONFIG_HOME)/zsh/node.zsh
 
 setup-git: setup-zsh
 	mkdir -p $(XDG_CONFIG_HOME)/git
