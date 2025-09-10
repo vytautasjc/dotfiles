@@ -15,7 +15,10 @@ setup-zsh:
 	touch ${HOME}/.hushlogin
 	mkdir -p $(XDG_CONFIG_HOME) $(XDG_CONFIG_HOME)/zsh
 
+	# If you export ZDOTDIR=~/.config/zsh in your ~/.zshenv, subsequent invocations of zsh (from the same environment) will attempt to read ~/.config/zsh/.zshenv
 	ln -sf $(CURRENT_DIR)/zsh/.zshenv $(HOME)/.zshenv
+	ln -sf $(CURRENT_DIR)/zsh/.zshenv $(XDG_CONFIG_HOME)/zsh/.zshenv
+
 	ln -sf $(CURRENT_DIR)/.aliases $(XDG_CONFIG_HOME)/.aliases
 	ln -sf $(CURRENT_DIR)/zsh/.zshrc $(XDG_CONFIG_HOME)/zsh/.zshrc
 	ln -sf $(CURRENT_DIR)/zsh/.zprofile $(XDG_CONFIG_HOME)/zsh/.zprofile
