@@ -3,6 +3,8 @@ export NVM_DIR="$([ -z "${XDG_CONFIG_HOME-}" ] && printf %s "${HOME}/.nvm" || pr
 if [ -s "$NVM_DIR/nvm.sh" ]; then
     . "$NVM_DIR/nvm.sh" --no-use # This loads nvm, without auto-using the default version
 
+    export PATH="$XDG_CONFIG_HOME/nvm/versions/node/$(nvm version default)/bin:$PATH"
+
     autoload -U add-zsh-hook
 
     nvm-switch() {

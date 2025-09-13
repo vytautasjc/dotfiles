@@ -8,7 +8,8 @@ export EDITOR="nvim"
 export VISUAL="nvim"
 
 export DOTFILES="$HOME/dotfiles"
-export ZDOTDIR="$XDG_CONFIG_HOME/zsh"
+
+ZDOTDIR="$XDG_CONFIG_HOME/zsh"
 
 export HISTFILE="$ZDOTDIR/.zhistory"    # History filepath
 export HISTSIZE=10000                   # Maximum events for internal history
