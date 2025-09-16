@@ -28,10 +28,6 @@ if [ -s "$NVM_DIR/nvm.sh" ]; then
             echo "Reverting to nvm default version"
             nvm use default
         fi
-
-        # Create a symlink to current node binary, useful when configuring IDEs to use project's node version
-        mkdir -p $HOME/bin
-        ln -sf $(which node) $HOME/bin/current-node
     }
 
     add-zsh-hook chpwd nvm-switch
