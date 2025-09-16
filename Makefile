@@ -1,9 +1,16 @@
-CURRENT_DIR = $(shell cd -- "$(dirname -- "${BASH_SOURCE[0]}")" &>/dev/null && pwd -P)
-ZSHENV_FILE = $(CURRENT_DIR)/zsh/.zshenv
+SHELL := /bin/zsh
+CURRENT_DIR := $(dir $(abspath $(lastword $(MAKEFILE_LIST))))
+ZSHENV_FILE := $(abspath $(CURRENT_DIR)/zsh/.zshenv)
 
 # Echo XDG_CONFIG_HOME from .zshenv and assign it to a Make variable
 ifneq ($(wildcard $(ZSHENV_FILE)),)
     XDG_CONFIG_HOME := $(shell . $(ZSHENV_FILE) && echo $$XDG_CONFIG_HOME)
+endif
+
+ifneq ($(XDG_CONFIG_HOME),)
+  $(info XDG_CONFIG_HOME=$(XDG_CONFIG_HOME))
+else
+  $(error XDG_CONFIG_HOME is not set! Make cannot continue.)
 endif
 
 # Fallback if not set
