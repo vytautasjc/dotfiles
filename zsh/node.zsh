@@ -5,11 +5,7 @@ if [ -s "$NVM_DIR/nvm.sh" ]; then
 
     . "$NVM_DIR/nvm.sh" --no-use # This loads nvm, without auto-using the default version
 
-    NODE_VER=$(nvm version default 2>/dev/null)
-
-    if [[ -n "$NODE_VER" && "$NODE_VER" != "N/A" ]]; then
-        export PATH="$XDG_CONFIG_HOME/nvm/versions/node/$NODE_VER/bin:$PATH"
-    fi
+    export PATH="$NVM_DIR/current/bin:$PATH"
 
     autoload -U add-zsh-hook
 
@@ -30,10 +26,6 @@ if [ -s "$NVM_DIR/nvm.sh" ]; then
             echo "Reverting to nvm default version"
             nvm use default
         fi
-
-        # Create a symlink to current node binary, useful when configuring IDEs to use project's node version
-        mkdir -p $HOME/bin
-        ln -sf $NVM_DIR/current/bin/node $HOME/bin/node-current
     }
 
     add-zsh-hook chpwd nvm-switch
