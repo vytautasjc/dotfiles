@@ -33,6 +33,7 @@ setup-zsh:
 	ln -sf $(CURRENT_DIR)/zsh/prompt.zsh $(XDG_CONFIG_HOME)/zsh/prompt.zsh
 	ln -sf $(CURRENT_DIR)/zsh/history.zsh $(XDG_CONFIG_HOME)/zsh/history.zsh
 	ln -sf $(CURRENT_DIR)/zsh/node.zsh $(XDG_CONFIG_HOME)/zsh/node.zsh
+	ln -sf $(CURRENT_DIR)/zsh/nix.zsh $(XDG_CONFIG_HOME)/zsh/nix.zsh
 
 setup-git: setup-zsh
 	mkdir -p $(XDG_CONFIG_HOME)/git
