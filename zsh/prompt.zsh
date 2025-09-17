@@ -81,8 +81,13 @@ prompt_setup() {
 
     NEWLINE=$'\n'
 
+    user_color=153
+    if [ "$USER" = "root" ]; then
+        user_color="red"         # root is red, user is blue
+    fi;
+
     RPROMPT=""
-    PROMPT='$(path_label) $(vcs_label)${NEWLINE}%F{153}%n > %f'
+    PROMPT='$(path_label) $(vcs_label)${NEWLINE}%F{$user_color}%n > %f'
 }
 
 prompt_setup
