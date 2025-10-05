@@ -12,6 +12,7 @@ source $XDG_CONFIG_HOME/zsh/history.zsh
 source $XDG_CONFIG_HOME/zsh/autocomplete.zsh
 source $XDG_CONFIG_HOME/zsh/prompt.zsh
 source $XDG_CONFIG_HOME/zsh/node.zsh
+source $XDG_CONFIG_HOME/zsh/sdkman.zsh
 source $XDG_CONFIG_HOME/zsh/nix.zsh
 
 source $XDG_CONFIG_HOME/.aliases
