@@ -1,43 +1,54 @@
 SHELL := /bin/zsh
-CURRENT_DIR := $(dir $(abspath $(lastword $(MAKEFILE_LIST))))
-ZSHENV_FILE := $(abspath $(CURRENT_DIR)/zsh/.zshenv)
 
-# Echo XDG_CONFIG_HOME from .zshenv and assign it to a Make variable
-ifneq ($(wildcard $(ZSHENV_FILE)),)
-    XDG_CONFIG_HOME := $(shell . $(ZSHENV_FILE) && echo $$XDG_CONFIG_HOME)
+# repo root (no trailing slash)
+REPO_DIR := $(shell dirname $(abspath $(lastword $(MAKEFILE_LIST))))
+ZSH_SRC := $(REPO_DIR)/zsh
+
+$(info REPO_DIR=$(REPO_DIR))
+$(info ZSH_SRC=$(ZSH_SRC))
+
+# Try to read XDG_CONFIG_HOME from repo .zshenv then from user's ~/.zshenv
+ifeq ($(XDG_CONFIG_HOME),)
+ifneq ($(wildcard $(ZSH_SRC)/.zshenv),)
+	XDG_CONFIG_HOME := $(shell . $(ZSH_SRC)/.zshenv >/dev/null 2>&1 && echo $$XDG_CONFIG_HOME)
+endif
+ifneq ($(wildcard $(HOME)/.zshenv),)
+	XDG_CONFIG_HOME := $(or $(XDG_CONFIG_HOME),$(shell . $(HOME)/.zshenv >/dev/null 2>&1 && echo $$XDG_CONFIG_HOME))
+endif
 endif
 
-ifneq ($(XDG_CONFIG_HOME),)
-  $(info XDG_CONFIG_HOME=$(XDG_CONFIG_HOME))
-else
-  $(error XDG_CONFIG_HOME is not set! Make cannot continue.)
-endif
-
-# Fallback if not set
+# fallback
 XDG_CONFIG_HOME ?= $(HOME)/.config
 
-setup-all: setup-zsh setup-git
+$(info XDG_CONFIG_HOME=$(XDG_CONFIG_HOME))
 
-setup-zsh:
-	touch ${HOME}/.hushlogin
-	mkdir -p $(XDG_CONFIG_HOME) $(XDG_CONFIG_HOME)/zsh
+.PHONY: all zsh git
 
-	# If you export ZDOTDIR=~/.config/zsh in your ~/.zshenv, subsequent invocations of zsh (from the same environment) will attempt to read ~/.config/zsh/.zshenv
-	ln -sf $(CURRENT_DIR)/zsh/.zshenv $(HOME)/.zshenv
-	ln -sf $(CURRENT_DIR)/zsh/.zshenv $(XDG_CONFIG_HOME)/zsh/.zshenv
+all: zsh git
 
-	ln -sf $(CURRENT_DIR)/.aliases $(XDG_CONFIG_HOME)/.aliases
-	ln -sf $(CURRENT_DIR)/zsh/.zshrc $(XDG_CONFIG_HOME)/zsh/.zshrc
-	ln -sf $(CURRENT_DIR)/zsh/.zprofile $(XDG_CONFIG_HOME)/zsh/.zprofile
-	ln -sf $(CURRENT_DIR)/zsh/autocomplete.zsh $(XDG_CONFIG_HOME)/zsh/autocomplete.zsh
-	ln -sf $(CURRENT_DIR)/zsh/prompt.zsh $(XDG_CONFIG_HOME)/zsh/prompt.zsh
-	ln -sf $(CURRENT_DIR)/zsh/history.zsh $(XDG_CONFIG_HOME)/zsh/history.zsh
-	ln -sf $(CURRENT_DIR)/zsh/node.zsh $(XDG_CONFIG_HOME)/zsh/node.zsh
-	ln -sf $(CURRENT_DIR)/zsh/sdkman.zsh $(XDG_CONFIG_HOME)/zsh/sdkman.zsh
-	ln -sf $(CURRENT_DIR)/zsh/nix.zsh $(XDG_CONFIG_HOME)/zsh/nix.zsh
+# list of files in zsh/ (basename only)
+ZSH_FILES := $(notdir $(wildcard $(ZSH_SRC)/*))
 
-setup-git: setup-zsh
-	mkdir -p $(XDG_CONFIG_HOME)/git
+zsh:
+	@mkdir -p "$(XDG_CONFIG_HOME)" "$(XDG_CONFIG_HOME)/zsh"
+	@touch "$(HOME)/.hushlogin"
+	@echo "Linking zsh files from $(ZSH_SRC) -> $(XDG_CONFIG_HOME)/zsh"
+	
+	@for f in $(ZSH_SRC)/*(N) $(ZSH_SRC)/.[!.]*(N) $(ZSH_SRC)/..?*(N); do \
+		[ -e "$$f" ] || continue; \
+		if [ -d "$$f" ]; then continue; fi; \
+		base=$$(basename "$$f"); \
+		ln -sf "$$f" "$(XDG_CONFIG_HOME)/zsh/$$base"; \
+	done
+	
+	@ln -sf "$(REPO_DIR)/.aliases" "$(XDG_CONFIG_HOME)/.aliases"
+	@ln -sf "$(REPO_DIR)/zsh/.zshenv" "$(HOME)/.zshenv"
 
-	ln -sf $(CURRENT_DIR)/git/.gitignore_global $(XDG_CONFIG_HOME)/git/.gitignore_global
-	git config --global core.excludesfile $(XDG_CONFIG_HOME)/git/.gitignore_global
+	@echo "zsh files linked"
+
+git: zsh
+	@mkdir -p "$(XDG_CONFIG_HOME)/git"
+	@ln -sf "$(REPO_DIR)/git/.gitignore_global" "$(XDG_CONFIG_HOME)/git/.gitignore_global"
+	@git config --global core.excludesfile "$(XDG_CONFIG_HOME)/git/.gitignore_global"
+	
+	@echo "git files linked"
