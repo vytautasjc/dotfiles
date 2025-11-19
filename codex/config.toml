@@ -1,5 +1,5 @@
 # Base settings
-model = "gpt-5-codex"
+model = "gpt-5.1-codex"
 model_provider = "openai"
 sandbox_mode = "workspace-write"
 approval_policy = "on-failure"
