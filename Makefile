@@ -7,20 +7,38 @@ ZSH_SRC := $(REPO_DIR)/zsh
 $(info REPO_DIR=$(REPO_DIR))
 $(info ZSH_SRC=$(ZSH_SRC))
 
-# Try to read XDG_CONFIG_HOME from repo .zshenv then from user's ~/.zshenv
+ZSHENV_FILES := $(ZSH_SRC)/.zshenv $(HOME)/.zshenv
+
+define read_zshenv_var
+$(strip $(shell \
+	for f in $(ZSHENV_FILES); do \
+		[ -f $$f ] || continue; \
+		. $$f >/dev/null 2>&1; \
+		val="$${$(1)}"; \
+		if [ -n "$$val" ]; then \
+			echo "$$val"; \
+			break; \
+		fi; \
+	done))
+endef
+
 ifeq ($(XDG_CONFIG_HOME),)
-ifneq ($(wildcard $(ZSH_SRC)/.zshenv),)
-	XDG_CONFIG_HOME := $(shell . $(ZSH_SRC)/.zshenv >/dev/null 2>&1 && echo $$XDG_CONFIG_HOME)
-endif
-ifneq ($(wildcard $(HOME)/.zshenv),)
-	XDG_CONFIG_HOME := $(or $(XDG_CONFIG_HOME),$(shell . $(HOME)/.zshenv >/dev/null 2>&1 && echo $$XDG_CONFIG_HOME))
-endif
+	XDG_CONFIG_HOME := $(call read_zshenv_var,XDG_CONFIG_HOME)
 endif
 
 # fallback
 XDG_CONFIG_HOME ?= $(HOME)/.config
 
 $(info XDG_CONFIG_HOME=$(XDG_CONFIG_HOME))
+
+ifeq ($(CODEX_HOME),)
+	CODEX_HOME := $(call read_zshenv_var,CODEX_HOME)
+endif
+
+# fallback
+CODEX_HOME ?= $(XDG_CONFIG_HOME)/codex
+
+$(info CODEX_HOME=$(CODEX_HOME))
 
 .PHONY: all zsh git
 
@@ -55,6 +73,6 @@ git: zsh
 
 codex: zsh
 	@mkdir -p "$(CODEX_HOME)"
-	@ln -sf "$(REPO_DIR)/codex/codex.toml" "$(CODEX_HOME)/codex/codex.toml"
+	@ln -sf "$(REPO_DIR)/codex/codex.toml" "$(CODEX_HOME)/codex.toml"
 	
 	@echo "codex files linked"
