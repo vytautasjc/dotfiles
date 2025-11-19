@@ -31,18 +31,9 @@ XDG_CONFIG_HOME ?= $(HOME)/.config
 
 $(info XDG_CONFIG_HOME=$(XDG_CONFIG_HOME))
 
-ifeq ($(CODEX_HOME),)
-	CODEX_HOME := $(call read_zshenv_var,CODEX_HOME)
-endif
-
-# fallback
-CODEX_HOME ?= $(XDG_CONFIG_HOME)/codex
-
-$(info CODEX_HOME=$(CODEX_HOME))
-
 .PHONY: all zsh git
 
-all: zsh git codex
+all: zsh git
 
 # list of files in zsh/ (basename only)
 ZSH_FILES := $(notdir $(wildcard $(ZSH_SRC)/*))
@@ -71,8 +62,3 @@ git: zsh
 	
 	@echo "git files linked"
 
-codex: zsh
-	@mkdir -p "$(CODEX_HOME)"
-	@ln -sf "$(REPO_DIR)/codex/codex.toml" "$(CODEX_HOME)/codex.toml"
-	
-	@echo "codex files linked"
