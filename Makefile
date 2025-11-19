@@ -24,7 +24,7 @@ $(info XDG_CONFIG_HOME=$(XDG_CONFIG_HOME))
 
 .PHONY: all zsh git
 
-all: zsh git
+all: zsh git codex
 
 # list of files in zsh/ (basename only)
 ZSH_FILES := $(notdir $(wildcard $(ZSH_SRC)/*))
@@ -52,3 +52,9 @@ git: zsh
 	@git config --global core.excludesfile "$(XDG_CONFIG_HOME)/git/.gitignore_global"
 	
 	@echo "git files linked"
+
+codex: zsh
+	@mkdir -p "$(CODEX_HOME)"
+	@ln -sf "$(REPO_DIR)/codex/codex.toml" "$(CODEX_HOME)/codex/codex.toml"
+	
+	@echo "codex files linked"

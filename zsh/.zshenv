@@ -1,6 +1,7 @@
 export PATH="$PATH:$HOME/bin"
 
 export XDG_CONFIG_HOME="$HOME/.config"
+export CODEX_HOME="$XDG_CONFIG_HOME/codex"
 export XDG_DATA_HOME="$XDG_CONFIG_HOME/local/share"
 export XDG_CACHE_HOME="$XDG_CONFIG_HOME/cache"
 
