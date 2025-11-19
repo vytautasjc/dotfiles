@@ -20,6 +20,14 @@ model_reasoning_effort = "high"
 model_verbosity = "high"
 sandbox_mode = "workspace-write"
 approval_policy = "on-failure"
+experimental_use_profile = true
+
+# Pair programming profile
+[profiles.pair]
+model_reasoning_effort = "high"
+model_verbosity = "high"
+sandbox_mode = "workspace-write"
+approval_policy = "untrusted"
 
 # Quick tasks profile
 [profiles.quick]
