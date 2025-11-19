@@ -1,2 +1,4 @@
 alias nix-install="nix-env -i"
 alias nix-update="nix-env -u '*'"
+alias cdx="codex"
+alias cdxp="codex --profile"
