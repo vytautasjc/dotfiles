@@ -77,3 +77,5 @@ claude: zsh
 	@mkdir -p "$(CLAUDE_CONFIG_DIR)"
 
 	@ln -sf "$(REPO_DIR)/claude/settings.json" "$(CLAUDE_CONFIG_DIR)/settings.json"
+
+	@echo "claude files linked"
