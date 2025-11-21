@@ -33,6 +33,17 @@ $(info XDG_CONFIG_HOME=$(XDG_CONFIG_HOME))
 
 .PHONY: all zsh git
 
+ifeq ($(CLAUDE_CONFIG_DIR),)
+	CLAUDE_CONFIG_DIR := $(call read_zshenv_var,CLAUDE_CONFIG_DIR)
+endif
+
+# fallback
+CLAUDE_CONFIG_DIR ?= $(XDG_CONFIG_HOME)/claude
+
+$(info CLAUDE_CONFIG_DIR=$(CLAUDE_CONFIG_DIR))
+
+.PHONY: all zsh git
+
 all: zsh git
 
 # list of files in zsh/ (basename only)
@@ -62,3 +73,7 @@ git: zsh
 	
 	@echo "git files linked"
 
+claude: zsh
+	@mkdir -p "$(CLAUDE_CONFIG_DIR)"
+
+	@ln -sf "$(REPO_DIR)/claude/settings.json" "$(CLAUDE_CONFIG_DIR)/settings.json"
