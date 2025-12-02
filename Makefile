@@ -31,7 +31,7 @@ XDG_CONFIG_HOME ?= $(HOME)/.config
 
 $(info XDG_CONFIG_HOME=$(XDG_CONFIG_HOME))
 
-.PHONY: all zsh git
+.PHONY: all zsh git tmux
 
 ifeq ($(CLAUDE_CONFIG_DIR),)
 	CLAUDE_CONFIG_DIR := $(call read_zshenv_var,CLAUDE_CONFIG_DIR)
@@ -42,9 +42,9 @@ CLAUDE_CONFIG_DIR ?= $(XDG_CONFIG_HOME)/claude
 
 $(info CLAUDE_CONFIG_DIR=$(CLAUDE_CONFIG_DIR))
 
-.PHONY: all zsh git
+.PHONY: all zsh git tmux
 
-all: zsh git
+all: zsh git tmux
 
 # list of files in zsh/ (basename only)
 ZSH_FILES := $(notdir $(wildcard $(ZSH_SRC)/*))
@@ -79,3 +79,8 @@ claude: zsh
 	@ln -sf "$(REPO_DIR)/claude/settings.json" "$(CLAUDE_CONFIG_DIR)/settings.json"
 
 	@echo "claude files linked"
+
+tmux: zsh
+	@mkdir -p "$(XDG_CONFIG_HOME)/tmux"
+	@ln -sf "$(REPO_DIR)/tmux/tmux.conf" "$(XDG_CONFIG_HOME)/tmux/tmux.conf"
+	@echo "tmux files linked"
