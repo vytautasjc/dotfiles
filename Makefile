@@ -40,9 +40,9 @@ CLAUDE_CONFIG_DIR ?= $(XDG_CONFIG_HOME)/claude
 
 $(info CLAUDE_CONFIG_DIR=$(CLAUDE_CONFIG_DIR))
 
-.PHONY: all zsh git
+.PHONY: all zsh git claude zellij
 
-all: zsh git
+all: zsh git claude zellij
 
 # list of files in zsh/ (basename only)
 ZSH_FILES := $(notdir $(wildcard $(ZSH_SRC)/*))
@@ -77,3 +77,10 @@ claude: zsh
 	@ln -sf "$(REPO_DIR)/claude/settings.json" "$(CLAUDE_CONFIG_DIR)/settings.json"
 
 	@echo "claude files linked"
+
+zellij: zsh
+	@mkdir -p "(XDG_CONFIG_HOME)/zellij"
+
+	@ln -sf "$(REPO_DIR)/zellij/config.kdl" "$(XDG_CONFIG_HOME)/zellij/config.kdl"
+
+	@echo "zellij files linked"
