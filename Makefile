@@ -79,7 +79,7 @@ claude: zsh
 	@echo "claude files linked"
 
 zellij: zsh
-	@mkdir -p "(XDG_CONFIG_HOME)/zellij"
+	@mkdir -p "$(XDG_CONFIG_HOME)/zellij"
 
 	@ln -sf "$(REPO_DIR)/zellij/config.kdl" "$(XDG_CONFIG_HOME)/zellij/config.kdl"
 
