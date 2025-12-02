@@ -7,6 +7,8 @@
 # %m => shortname host
 # %(?..) => prompt conditional - %(condition.true.false)
 
+typeset -g __prompt_initialized=0
+
 convert_time() {
     local t=$1
 
@@ -40,6 +42,12 @@ convert_time() {
 }
 
 precmd() {
+    # Skip on first run
+    if (( __prompt_initialized == 0 )); then
+        __prompt_initialized=1
+        return
+    fi
+
     if [ $timer ]; then
         now=$(($(print -P %D{%s%6.})/1000))
         timer_elapsed=$((now - timer))
@@ -54,8 +62,11 @@ precmd() {
 }
 
 preexec() {
-    timer=$(($(print -P %D{%s%6.})/1000))
-    print ""
+    # Don't execute on empty/whitespace commands
+    if [[ -n "${1//[[:space:]]/}" ]]; then
+        timer=$(($(print -P %D{%s%6.})/1000))
+        print ""
+    fi
 }
 
 prompt_git_branch() {
