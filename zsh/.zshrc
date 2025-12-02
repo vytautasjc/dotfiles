@@ -14,6 +14,6 @@ source $XDG_CONFIG_HOME/zsh/prompt.zsh
 source $XDG_CONFIG_HOME/zsh/node.zsh
 source $XDG_CONFIG_HOME/zsh/sdkman.zsh
 source $XDG_CONFIG_HOME/zsh/nix.zsh
-source $XDG_CONFIG_HOME/zsh/tmux.zsh
+source $XDG_CONFIG_HOME/zsh/zellij.zsh
 
 source $XDG_CONFIG_HOME/.aliases
