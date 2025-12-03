@@ -40,9 +40,9 @@ CLAUDE_CONFIG_DIR ?= $(XDG_CONFIG_HOME)/claude
 
 $(info CLAUDE_CONFIG_DIR=$(CLAUDE_CONFIG_DIR))
 
-.PHONY: all zsh git claude zellij
+.PHONY: all zsh git claude zellij tmux
 
-all: zsh git claude zellij
+all: zsh git claude zellij tmux
 
 # list of files in zsh/ (basename only)
 ZSH_FILES := $(notdir $(wildcard $(ZSH_SRC)/*))
@@ -84,3 +84,10 @@ zellij: zsh
 	@ln -sf "$(REPO_DIR)/zellij/config.kdl" "$(XDG_CONFIG_HOME)/zellij/config.kdl"
 
 	@echo "zellij files linked"
+
+tmux: zsh
+	@mkdir -p "$(XDG_CONFIG_HOME)/tmux"
+
+	@ln -sf "$(REPO_DIR)/tmux/tmux.conf" "$(XDG_CONFIG_HOME)/tmux/tmux.conf"
+
+	@echo "tmux files linked"
