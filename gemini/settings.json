@@ -6,5 +6,11 @@
   },
   "context": {
     "fileName": ["AGENTS.md", "CONTEXT.md", "GEMINI.md"]
+  },
+  "mcpServers": {
+    "webstorm": {
+      "url": "http://127.0.0.1:64342/sse",
+      "trust": true
+    }
   }
 }
