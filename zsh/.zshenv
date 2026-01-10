@@ -6,6 +6,7 @@ export XDG_CACHE_HOME="$XDG_CONFIG_HOME/cache"
 
 export CODEX_HOME="$XDG_CONFIG_HOME/codex"
 export CLAUDE_CONFIG_DIR="$XDG_CONFIG_HOME/claude"
+export GEMINI_CONFIG_DIR="$XDG_CONFIG_HOME/gemini"
 
 export EDITOR="nvim"
 export VISUAL="nvim"

@@ -40,9 +40,18 @@ CLAUDE_CONFIG_DIR ?= $(XDG_CONFIG_HOME)/claude
 
 $(info CLAUDE_CONFIG_DIR=$(CLAUDE_CONFIG_DIR))
 
-.PHONY: all zsh git claude zellij tmux
+ifeq ($(GEMINI_CONFIG_DIR),)
+	GEMINI_CONFIG_DIR := $(call read_zshenv_var,GEMINI_CONFIG_DIR)
+endif
 
-all: zsh git claude zellij tmux
+# fallback
+GEMINI_CONFIG_DIR ?= $(XDG_CONFIG_HOME)/gemini
+
+$(info CLAUDE_CONFIG_DIR=$(CLAUDE_CONFIG_DIR))
+
+.PHONY: all zsh git claude gemini tmux
+
+all: zsh git claude gemini tmux
 
 # list of files in zsh/ (basename only)
 ZSH_FILES := $(notdir $(wildcard $(ZSH_SRC)/*))
@@ -78,12 +87,13 @@ claude: zsh
 
 	@echo "claude files linked"
 
-zellij: zsh
-	@mkdir -p "$(XDG_CONFIG_HOME)/zellij"
+gemini: zsh
+	@mkdir -p "$(CLAUDE_CONFIG_DIR)"
 
-	@ln -sf "$(REPO_DIR)/zellij/config.kdl" "$(XDG_CONFIG_HOME)/zellij/config.kdl"
+	mv "$(GEMINI_CONFIG_DIR)/settings.json" "$(GEMINI_CONFIG_DIR)/settings.json.bak"
+	@ln -sf "$(REPO_DIR)/gemini/settings.json" "$(GEMINI_CONFIG_DIR)/settings.json"
 
-	@echo "zellij files linked"
+	@echo "claude files linked"
 
 tmux: zsh
 	@mkdir -p "$(XDG_CONFIG_HOME)/tmux"
