@@ -1,4 +1,9 @@
 {
+  "general": {
+    "checkpointing": {
+      "enabled": true
+    }
+  },
   "security": {
     "auth": {
       "selectedType": "oauth-personal"
