@@ -17,5 +17,27 @@
       "url": "http://127.0.0.1:64342/sse",
       "trust": true
     }
+  },
+  "tools": {
+    "approvalMode": "auto_edit",
+    "allowed": [
+      "run_shell_command(git status)",
+      "run_shell_command(pnpm ci)",
+      "run_shell_command(npm ci)",
+      "run_shell_command(pnpm i)",
+      "run_shell_command(npm i)",
+      "run_shell_command(pnpm install)",
+      "run_shell_command(npm install)",
+      "run_shell_command(npm info)",
+      "run_shell_command(npm test)",
+      "run_shell_command(pnpm test)",
+      "run_shell_command(cat)",
+      "run_shell_command(ls)",
+      "run_shell_command(find)",
+      "run_shell_command(pwd)",
+      "run_shell_command(cd)",
+      "run_shell_command(./gradlew)",
+      "run_shell_command(gradlew)"
+    ]
   }
 }
