@@ -34,3 +34,11 @@ if [ -s "$NVM_DIR/nvm.sh" ]; then
 
     nvm-switch
 fi
+
+# pnpm
+export PNPM_HOME="$XDG_CONFIG_HOME/local/share/pnpm"
+case ":$PATH:" in
+  *":$PNPM_HOME:"*) ;;
+  *) export PATH="$PNPM_HOME:$PATH" ;;
+esac
+# pnpm end
