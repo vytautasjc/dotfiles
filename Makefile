@@ -88,12 +88,15 @@ claude: zsh
 	@echo "claude files linked"
 
 gemini: zsh
-	@mkdir -p "$(CLAUDE_CONFIG_DIR)"
+	@mkdir -p "$(GEMINI_CONFIG_DIR)"
 
-	mv "$(GEMINI_CONFIG_DIR)/settings.json" "$(GEMINI_CONFIG_DIR)/settings.json.bak"
+	@if [ -f "$(GEMINI_CONFIG_DIR)/settings.json" ]; then \
+		mv "$(GEMINI_CONFIG_DIR)/settings.json" "$(GEMINI_CONFIG_DIR)/settings.json.bak"; \
+	fi
+	
 	@ln -sf "$(REPO_DIR)/gemini/settings.json" "$(GEMINI_CONFIG_DIR)/settings.json"
 
-	@echo "claude files linked"
+	@echo "gemini files linked"
 
 tmux: zsh
 	@mkdir -p "$(XDG_CONFIG_HOME)/tmux"
