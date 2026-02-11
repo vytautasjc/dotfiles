@@ -110,8 +110,8 @@ gemini: zsh
 codex: zsh
 	@mkdir -p "$(CODEX_CONFIG_DIR)"
 
-	@if [ -f "$(CODEX_CONFIG_DIR)/settings.json" ]; then \
-		mv "$(CODEX_CONFIG_DIR)/settings.json" "$(CODEX_CONFIG_DIR)/settings.json.bak"; \
+	@if [ -f "$(CODEX_CONFIG_DIR)/config.toml" ]; then \
+		mv "$(CODEX_CONFIG_DIR)/config.toml" "$(CODEX_CONFIG_DIR)/config.toml.bak"; \
 	fi
 
 	@ln -sf "$(REPO_DIR)/codex/config.toml" "$(CODEX_CONFIG_DIR)/config.toml"
