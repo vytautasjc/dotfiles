@@ -8,6 +8,13 @@ setopt CORRECT                          # Spelling correction
 setopt CDABLE_VARS                      # Change directory to a path stored in a variable.
 setopt EXTENDED_GLOB                    # Use extended globbing syntax.
 
+# Set the theme (Options: dracula, molokai, gruvbox, iceberg, snazzy)
+export LS_THEME="dracula"
+
+if command -v dircolors > /dev/null; then
+  eval "$(dircolors -b)"
+fi
+
 source $XDG_CONFIG_HOME/zsh/history.zsh
 source $XDG_CONFIG_HOME/zsh/autocomplete.zsh
 source $XDG_CONFIG_HOME/zsh/prompt.zsh
