@@ -47,11 +47,20 @@ endif
 # fallback
 GEMINI_CONFIG_DIR ?= $(XDG_CONFIG_HOME)/gemini
 
-$(info CLAUDE_CONFIG_DIR=$(CLAUDE_CONFIG_DIR))
+$(info GEMINI_CONFIG_DIR=$(GEMINI_CONFIG_DIR))
 
-.PHONY: all zsh git claude gemini tmux
+ifeq ($(CODEX_CONFIG_DIR),)
+	CODEX_CONFIG_DIR := $(call read_zshenv_var,CODEX_CONFIG_DIR)
+endif
 
-all: zsh git claude gemini tmux
+# fallback
+CODEX_CONFIG_DIR ?= $(XDG_CONFIG_HOME)/codex
+
+$(info GEMINI_CONFIG_DIR=$(GEMINI_CONFIG_DIR))
+
+.PHONY: all zsh git claude gemini codex tmux
+
+all: zsh git claude gemini codex tmux
 
 # list of files in zsh/ (basename only)
 ZSH_FILES := $(notdir $(wildcard $(ZSH_SRC)/*))
@@ -93,10 +102,21 @@ gemini: zsh
 	@if [ -f "$(GEMINI_CONFIG_DIR)/settings.json" ]; then \
 		mv "$(GEMINI_CONFIG_DIR)/settings.json" "$(GEMINI_CONFIG_DIR)/settings.json.bak"; \
 	fi
-	
+
 	@ln -sf "$(REPO_DIR)/gemini/settings.json" "$(GEMINI_CONFIG_DIR)/settings.json"
 
 	@echo "gemini files linked"
+
+codex: zsh
+	@mkdir -p "$(CODEX_CONFIG_DIR)"
+
+	@if [ -f "$(CODEX_CONFIG_DIR)/settings.json" ]; then \
+		mv "$(CODEX_CONFIG_DIR)/settings.json" "$(CODEX_CONFIG_DIR)/settings.json.bak"; \
+	fi
+
+	@ln -sf "$(REPO_DIR)/codex/config.toml" "$(CODEX_CONFIG_DIR)/config.toml"
+
+	@echo "codex files linked"
 
 tmux: zsh
 	@mkdir -p "$(XDG_CONFIG_HOME)/tmux"
