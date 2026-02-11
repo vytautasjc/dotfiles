@@ -2,6 +2,3 @@ alias nix-install="nix-env -i"
 alias nix-update="nix-env -u '*'"
 alias cdx="codex"
 alias cdxp="codex --profile"
-alias npm-legacy='npm'
-alias npm='pnpm'
-alias npx='pnpx'
