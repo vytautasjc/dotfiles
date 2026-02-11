@@ -8,26 +8,30 @@ $(info REPO_DIR=$(REPO_DIR))
 $(info ZSH_SRC=$(ZSH_SRC))
 
 ZSHENV_FILES := $(wildcard $(ZSH_SRC)/.zshenv $(HOME)/.zshenv)
+CACHE_FILE := .env.cache
 
-# Fetch all variables in ONE shell call to avoid fork-bombing performance
-# This creates a list of KEY=VALUE pairs
-ENV_VARS := $(shell for f in $(ZSHENV_FILES); do . $$f >/dev/null 2>&1; done; \
-             echo "XDG_CONFIG_HOME=$$XDG_CONFIG_HOME"; \
-             echo "CLAUDE_CONFIG_DIR=$$CLAUDE_CONFIG_DIR"; \
-             echo "GEMINI_CONFIG_DIR=$$GEMINI_CONFIG_DIR"; \
-             echo "CODEX_CONFIG_DIR=$$CODEX_HOME")
+# Include the cache if it exists
+-include $(CACHE_FILE)
 
-# Helper function to extract a value from the ENV_VARS blob
-extract_var = $(patsubst $(1)=%,%,$(filter $(1)=%,$(ENV_VARS)))
+# Rule to generate the cache ONLY when .zshenv changes
+$(CACHE_FILE): $(ZSHENV_FILES)
+	@echo "Regenerating $(CACHE_FILE)..."
+	@echo "# Auto-generated config" > $@
+	@for f in $(ZSHENV_FILES); do . $$f >/dev/null 2>&1; done; \
+	 echo "XDG_CONFIG_HOME=$${XDG_CONFIG_HOME:-$(HOME)/.config}" >> $@; \
+	 echo "CLAUDE_CONFIG_DIR=$${CLAUDE_CONFIG_DIR:-$${XDG_CONFIG_HOME:-$(HOME)/.config}/claude}" >> $@; \
+	 echo "GEMINI_CONFIG_DIR=$${GEMINI_CONFIG_DIR:-$${XDG_CONFIG_HOME:-$(HOME)/.config}/gemini}" >> $@; \
+	 echo "CODEX_CONFIG_DIR=$${CODEX_HOME:-$${XDG_CONFIG_HOME:-$(HOME)/.config}/codex}" >> $@
 
-# Assign with fallbacks
-# Note: we use ?= so environment variables already in the shell take precedence
-XDG_CONFIG_HOME   := $(or $(XDG_CONFIG_HOME),$(call extract_var,XDG_CONFIG_HOME),$(HOME)/.config)
-CLAUDE_CONFIG_DIR := $(or $(CLAUDE_CONFIG_DIR),$(call extract_var,CLAUDE_CONFIG_DIR),$(XDG_CONFIG_HOME)/claude)
-GEMINI_CONFIG_DIR := $(or $(GEMINI_CONFIG_DIR),$(call extract_var,GEMINI_CONFIG_DIR),$(XDG_CONFIG_HOME)/gemini)
-CODEX_CONFIG_DIR  := $(or $(CODEX_CONFIG_DIR),$(call extract_var,CODEX_CONFIG_DIR),$(XDG_CONFIG_HOME)/codex)
+# Force Make to check the cache file at startup
+$(ZSHENV_FILES): ;
 
-$(info --- Configuration ---)
+# Fallbacks in case the cache hasn't been built yet (first run)
+XDG_CONFIG_HOME   ?= $(HOME)/.config
+CLAUDE_CONFIG_DIR ?= $(XDG_CONFIG_HOME)/claude
+GEMINI_CONFIG_DIR ?= $(XDG_CONFIG_HOME)/gemini
+CODEX_CONFIG_DIR  ?= $(XDG_CONFIG_HOME)/codex
+
 $(info XDG_CONFIG_HOME   = $(XDG_CONFIG_HOME))
 $(info CLAUDE_CONFIG_DIR  = $(CLAUDE_CONFIG_DIR))
 $(info GEMINI_CONFIG_DIR  = $(GEMINI_CONFIG_DIR))
