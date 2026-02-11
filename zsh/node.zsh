@@ -37,6 +37,8 @@ fi
 
 # pnpm
 export PNPM_HOME="$XDG_CONFIG_HOME/local/share/pnpm"
+export PNPM_CONF_GLOBAL_BIN_DIR="$PNPM_HOME"
+
 case ":$PATH:" in
   *":$PNPM_HOME:"*) ;;
   *) export PATH="$PNPM_HOME:$PATH" ;;
