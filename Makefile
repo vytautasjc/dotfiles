@@ -7,56 +7,31 @@ ZSH_SRC := $(REPO_DIR)/zsh
 $(info REPO_DIR=$(REPO_DIR))
 $(info ZSH_SRC=$(ZSH_SRC))
 
-ZSHENV_FILES := $(ZSH_SRC)/.zshenv $(HOME)/.zshenv
+ZSHENV_FILES := $(wildcard $(ZSH_SRC)/.zshenv $(HOME)/.zshenv)
 
-define read_zshenv_var
-$(strip $(shell \
-	for f in $(ZSHENV_FILES); do \
-		[ -f $$f ] || continue; \
-		. $$f >/dev/null 2>&1; \
-		val="$${$(1)}"; \
-		if [ -n "$$val" ]; then \
-			echo "$$val"; \
-			break; \
-		fi; \
-	done))
-endef
+# Fetch all variables in ONE shell call to avoid fork-bombing performance
+# This creates a list of KEY=VALUE pairs
+ENV_VARS := $(shell for f in $(ZSHENV_FILES); do . $$f >/dev/null 2>&1; done; \
+             echo "XDG_CONFIG_HOME=$$XDG_CONFIG_HOME"; \
+             echo "CLAUDE_CONFIG_DIR=$$CLAUDE_CONFIG_DIR"; \
+             echo "GEMINI_CONFIG_DIR=$$GEMINI_CONFIG_DIR"; \
+             echo "CODEX_CONFIG_DIR=$$CODEX_HOME")
 
-ifeq ($(XDG_CONFIG_HOME),)
-	XDG_CONFIG_HOME := $(call read_zshenv_var,XDG_CONFIG_HOME)
-endif
+# Helper function to extract a value from the ENV_VARS blob
+extract_var = $(patsubst $(1)=%,%,$(filter $(1)=%,$(ENV_VARS)))
 
-# fallback
-XDG_CONFIG_HOME ?= $(HOME)/.config
+# Assign with fallbacks
+# Note: we use ?= so environment variables already in the shell take precedence
+XDG_CONFIG_HOME   := $(or $(XDG_CONFIG_HOME),$(call extract_var,XDG_CONFIG_HOME),$(HOME)/.config)
+CLAUDE_CONFIG_DIR := $(or $(CLAUDE_CONFIG_DIR),$(call extract_var,CLAUDE_CONFIG_DIR),$(XDG_CONFIG_HOME)/claude)
+GEMINI_CONFIG_DIR := $(or $(GEMINI_CONFIG_DIR),$(call extract_var,GEMINI_CONFIG_DIR),$(XDG_CONFIG_HOME)/gemini)
+CODEX_CONFIG_DIR  := $(or $(CODEX_CONFIG_DIR),$(call extract_var,CODEX_CONFIG_DIR),$(XDG_CONFIG_HOME)/codex)
 
-$(info XDG_CONFIG_HOME=$(XDG_CONFIG_HOME))
-
-ifeq ($(CLAUDE_CONFIG_DIR),)
-	CLAUDE_CONFIG_DIR := $(call read_zshenv_var,CLAUDE_CONFIG_DIR)
-endif
-
-# fallback
-CLAUDE_CONFIG_DIR ?= $(XDG_CONFIG_HOME)/claude
-
-$(info CLAUDE_CONFIG_DIR=$(CLAUDE_CONFIG_DIR))
-
-ifeq ($(GEMINI_CONFIG_DIR),)
-	GEMINI_CONFIG_DIR := $(call read_zshenv_var,GEMINI_CONFIG_DIR)
-endif
-
-# fallback
-GEMINI_CONFIG_DIR ?= $(XDG_CONFIG_HOME)/gemini
-
-$(info GEMINI_CONFIG_DIR=$(GEMINI_CONFIG_DIR))
-
-ifeq ($(CODEX_CONFIG_DIR),)
-	CODEX_CONFIG_DIR := $(call read_zshenv_var,CODEX_CONFIG_DIR)
-endif
-
-# fallback
-CODEX_CONFIG_DIR ?= $(XDG_CONFIG_HOME)/codex
-
-$(info GEMINI_CONFIG_DIR=$(GEMINI_CONFIG_DIR))
+$(info --- Configuration ---)
+$(info XDG_CONFIG_HOME   = $(XDG_CONFIG_HOME))
+$(info CLAUDE_CONFIG_DIR  = $(CLAUDE_CONFIG_DIR))
+$(info GEMINI_CONFIG_DIR  = $(GEMINI_CONFIG_DIR))
+$(info CODEX_CONFIG_DIR   = $(CODEX_CONFIG_DIR))
 
 .PHONY: all zsh git claude gemini codex tmux
 
