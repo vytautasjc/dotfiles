@@ -1,5 +1,5 @@
 # Base settings
-model = "gpt-5.1-codex-max"
+model = "gpt-5.3-codex"
 model_provider = "openai"
 sandbox_mode = "workspace-write"
 approval_policy = "on-failure"
@@ -16,7 +16,7 @@ experimental_use_profile = true
 
 # Development profile
 [profiles.dev]
-model_reasoning_effort = "high"
+model_reasoning_effort = "xhigh"
 model_verbosity = "high"
 sandbox_mode = "workspace-write"
 approval_policy = "on-failure"
@@ -38,7 +38,8 @@ approval_policy = "never"
 # Analysis profile
 [profiles.analyze]
 sandbox_mode = "read-only"
-model_reasoning_effort = "high"
+model_reasoning_effort = "xhigh"
+model_verbosity = "high"
 approval_policy = "never"
 
 # Automation profile
