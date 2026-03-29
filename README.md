@@ -10,6 +10,11 @@ make setup-all
 make setup-zshrc setup-git
 ```
 
+Using Home Manager:
+```sh
+nix run github:nix-community/home-manager -- switch --flake ".#dev" -b backup
+```
+
 ## SSH Key Setup
 To ensure SSH keys are loaded automatically and authenticated by the macOS keychain:
 
@@ -51,7 +56,3 @@ To ensure SSH keys are loaded automatically and authenticated by the macOS keych
    ```
 
 This setup ensures your default Node.js version is always loaded unless a project-specific `.nvmrc` is present. Otherwise, initially node binary will point to the `nvm alias default` version, and will not revert to default version if `.nvmrc` is not present.
-
-## To-Do
-- [ ] Use Stow
-- [ ] Automate specific ssh key loading via zprofile (e.g. from ~/.ssh/autoload/*)

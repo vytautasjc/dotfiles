@@ -1,2 +1,6 @@
 .DS_Store
 .env.cache
+.zsh_history
+.zcompdump
+Dockerfile
+compose.yml
