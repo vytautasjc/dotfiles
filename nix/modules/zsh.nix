@@ -8,7 +8,10 @@ let
   dotfiles = "${config.home.homeDirectory}/dotfiles";
 in
 {
-  home.file.".zshenv".source = mkLink "${dotfiles}/zsh/.zshenv";
+  home.file = {
+    ".zshenv".source = mkLink "${dotfiles}/zsh/.zshenv";
+    ".zprofile".source = mkLink "${dotfiles}/zsh/.zprofile";
+  };
 
   home.packages = with pkgs; [
     zsh
