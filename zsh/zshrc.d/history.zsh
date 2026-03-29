@@ -1,3 +1,7 @@
+export HISTFILE="$ZDOTDIR/.zhistory"    # History filepath
+export HISTSIZE=10000                   # Maximum events for internal history
+export SAVEHIST=10000                   # Maximum events to be saved in history file
+
 autoload -Uz add-zsh-hook
 
 setopt HIST_SAVE_NO_DUPS                # Do not write a duplicate event to the history file.

@@ -15,10 +15,6 @@ export DOTFILES="$HOME/dotfiles"
 
 ZDOTDIR="$XDG_CONFIG_HOME/zsh"
 
-export HISTFILE="$ZDOTDIR/.zhistory"    # History filepath
-export HISTSIZE=10000                   # Maximum events for internal history
-export SAVEHIST=10000                   # Maximum events to be saved in history file
-
 if [ -s "$HOME/.zshenv.local" ]; then
     . "$HOME/.zshenv.local"
 fi
