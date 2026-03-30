@@ -56,3 +56,9 @@ To ensure SSH keys are loaded automatically and authenticated by the macOS keych
    ```
 
 This setup ensures your default Node.js version is always loaded unless a project-specific `.nvmrc` is present. Otherwise, initially node binary will point to the `nvm alias default` version, and will not revert to default version if `.nvmrc` is not present.
+
+# To-Do
+
+- [ ] FNM with home manager for limadev
+- [ ] JDK setup with home manager
+- [ ] Use direnv for folder specific env (replace sdkman?)
