@@ -1,4 +1,11 @@
-{ config, pkgs, ... }:
+{
+  config,
+  pkgs,
+  # In case of a VM this should point to a volume that is persisted between VM runs, e.g. a persistent volume
+  # This value is passed as env variable from Lima provision scripts
+  dataMountPath,
+  ...
+}:
 
 let
   # Helper to avoid repeating the check-and-link logic for the mount
@@ -21,10 +28,11 @@ let
       echo "Target ${target} not found. Skipping link creation for ${linkName}."
     fi
   '';
-  
+
   homeDir = config.home.homeDirectory;
   dotfilesDir = "${homeDir}/dotfiles"; # Adjust if your dotfiles are elsewhere
-in {
+in
+{
   imports = [
     ../modules/common.nix
     ../modules/zsh.nix
@@ -35,7 +43,7 @@ in {
 
   home.activation = {
     # Logic for persistent Lima-VM configs
-    setupDataLinks = lib.hm.dag.entryAfter ["writeBoundary"] ''
+    setupDataLinks = lib.hm.dag.entryAfter [ "writeBoundary" ] ''
       MOUNT="${dataMountPath}"
       if [ -z "$MOUNT" ]; then 
         echo "Warning: DATA_MOUNT_PATH is empty, skipping mount links."
