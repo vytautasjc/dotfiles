@@ -22,10 +22,6 @@ in {
     ../modules/agents.nix
   ];
 
-  home.packages = with pkgs; [
-    zsh
-  ];
-
   home.activation = {
     # Logic for persistent Lima-VM configs
     setupDataLinks = lib.hm.dag.entryAfter ["writeBoundary"] ''
