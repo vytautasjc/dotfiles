@@ -13,6 +13,9 @@ export VISUAL="nvim"
 
 export DOTFILES="$HOME/dotfiles"
 
+# Used by multi-user Nix setup
+export NIX_REMOTE=daemon
+
 ZDOTDIR="$XDG_CONFIG_HOME/zsh"
 
 if [ -s "$HOME/.zshenv.local" ]; then
