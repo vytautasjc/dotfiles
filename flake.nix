@@ -15,6 +15,7 @@
           system,
           username,
           homeDirectory,
+          extraSpecialArgs ? { },
           extraModules ? [ ],
         }:
         home-manager.lib.homeManagerConfiguration {
@@ -22,6 +23,8 @@
             inherit system;
             config.allowUnfree = true;
           };
+
+          inherit extraSpecialArgs;
 
           modules = [
             ./nix/users/${username}.nix
