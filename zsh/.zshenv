@@ -13,11 +13,10 @@ export VISUAL="nvim"
 
 export DOTFILES="$HOME/dotfiles"
 
-ZDOTDIR="$XDG_CONFIG_HOME/zsh"
+# Used by multi-user Nix setup
+export NIX_REMOTE=daemon
 
-export HISTFILE="$ZDOTDIR/.zhistory"    # History filepath
-export HISTSIZE=10000                   # Maximum events for internal history
-export SAVEHIST=10000                   # Maximum events to be saved in history file
+ZDOTDIR="$XDG_CONFIG_HOME/zsh"
 
 if [ -s "$HOME/.zshenv.local" ]; then
     . "$HOME/.zshenv.local"
