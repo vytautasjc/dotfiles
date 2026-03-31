@@ -22,6 +22,7 @@ in
     git
     tmux
     neovim
+    coreutils # for dircolors
   ];
 
   # Shared Variables
