@@ -1,6 +1,7 @@
 {
   config,
   pkgs,
+  lib,
   # In case of a VM this should point to a volume that is persisted between VM runs, e.g. a persistent volume
   # This value is passed as env variable from Lima provision scripts
   dataMountPath,
