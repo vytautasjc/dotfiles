@@ -14,7 +14,13 @@ export LS_THEME="dracula"
 if command -v dircolors > /dev/null; then
   eval "$(dircolors -b)"
 fi
-for file in "$ZDOTDIR"/zshrc.d/*.zsh(-.N); do
+
+# Source modular configs in alphanumeric order
+# (-.N) is a Zsh glob qualifier:
+#   -  : follow symlinks
+#   .  : only regular files
+#   N  : sets NULL_GLOB (don't error if directory is empty)
+for file in "$ZDOTDIR"/zshrc.d/[0-9][0-9]-*.zsh(-.N); do
   source "$file"
 done
 

@@ -32,9 +32,6 @@ in
 
   xdg.configFile = {
     "tmux/tmux.conf".source = mkLink "${dotfiles}/tmux/tmux.conf";
-    "claude/settings.json".source = mkLink "${dotfiles}/claude/settings.json";
-    "gemini/settings.json".source = mkLink "${dotfiles}/gemini/settings.json";
-    "codex/config.toml".source = mkLink "${dotfiles}/codex/config.toml";
     ".aliases".source = mkLink "${dotfiles}/.aliases";
   };
 }

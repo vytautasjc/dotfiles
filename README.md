@@ -12,8 +12,10 @@ make setup-zshrc setup-git
 
 Using Home Manager:
 ```sh
-nix run github:nix-community/home-manager -- switch --flake ".#dev" -b backup
+nix run github:nix-community/home-manager -- switch --flake ".#$(whoami)" -b backup
 ```
+
+After every dotfiles update run `hms` which is a shorter version of the above command.
 
 ## SSH Key Setup
 To ensure SSH keys are loaded automatically and authenticated by the macOS keychain:
