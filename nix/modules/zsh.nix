@@ -13,9 +13,5 @@ in
     ".zprofile".source = mkLink "${dotfiles}/zsh/.zprofile";
   };
 
-  home.packages = with pkgs; [
-    zsh
-  ];
-
   xdg.configFile."zsh".source = mkLink "${dotfiles}/zsh";
 }

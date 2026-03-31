@@ -4,4 +4,8 @@
     ../modules/common.nix
     ../modules/zsh.nix
   ];
+
+  home.packages = with pkgs; [
+    zsh
+  ];
 }
