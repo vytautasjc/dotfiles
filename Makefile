@@ -3,9 +3,11 @@ SHELL := /bin/zsh
 # repo root (no trailing slash)
 REPO_DIR := $(shell dirname $(abspath $(lastword $(MAKEFILE_LIST))))
 ZSH_SRC := $(REPO_DIR)/zsh
+ZSH_DEST := $(XDG_CONFIG_HOME)/zsh
 
 $(info REPO_DIR=$(REPO_DIR))
 $(info ZSH_SRC=$(ZSH_SRC))
+$(info ZSH_DEST=$(ZSH_DEST))
 
 ZSHENV_FILES := $(wildcard $(ZSH_SRC)/.zshenv $(HOME)/.zshenv)
 CACHE_FILE := .env.cache
@@ -41,24 +43,30 @@ $(info CODEX_CONFIG_DIR   = $(CODEX_CONFIG_DIR))
 
 all: zsh git claude gemini codex tmux
 
-# list of files in zsh/ (basename only)
-ZSH_FILES := $(notdir $(wildcard $(ZSH_SRC)/*))
-
-zsh:
-	@mkdir -p "$(XDG_CONFIG_HOME)" "$(XDG_CONFIG_HOME)/zsh"
+hushlogin:
 	@touch "$(HOME)/.hushlogin"
-	@echo "Linking zsh files from $(ZSH_SRC) -> $(XDG_CONFIG_HOME)/zsh"
-	
-	@for f in $(ZSH_SRC)/*(N) $(ZSH_SRC)/.[!.]*(N) $(ZSH_SRC)/..?*(N); do \
-		[ -e "$$f" ] || continue; \
-		if [ -d "$$f" ]; then continue; fi; \
-		base=$$(basename "$$f"); \
-		ln -sf "$$f" "$(XDG_CONFIG_HOME)/zsh/$$base"; \
-	done
-	
-	@ln -sf "$(REPO_DIR)/.aliases" "$(XDG_CONFIG_HOME)/.aliases"
-	@ln -sf "$(REPO_DIR)/zsh/.zshenv" "$(HOME)/.zshenv"
 
+$(XDG_CONFIG_HOME)/.aliases: $(REPO_DIR)/.aliases
+	@ln -sf $(realpath $<) $@
+
+zsh: hushlogin $(XDG_CONFIG_HOME)/.aliases
+	@mkdir -p "$(XDG_CONFIG_HOME)" "$(XDG_CONFIG_HOME)/zsh"
+	
+	@echo "Linking zsh files from $(ZSH_SRC) -> $(ZSH_DEST)"
+	
+	@echo "Mirroring $(ZSH_SRC) -> $(ZSH_DEST)"
+	
+	@mkdir -p "$(ZSH_DEST)"
+	@find "$(ZSH_SRC)" -type f | while read -r src; do \
+		rel_path=$${src#$(ZSH_SRC)/}; \
+		dest_path="$(ZSH_DEST)/$$rel_path"; \
+		mkdir -p "$$(dirname "$$dest_path")"; \
+		ln -sf "$$src" "$$dest_path"; \
+		echo "Linked $$rel_path"; \
+	done
+
+	@ln -sf "$(REPO_DIR)/zsh/.zshenv" "$(HOME)/.zshenv"
+	
 	@echo "zsh files linked"
 
 git: zsh

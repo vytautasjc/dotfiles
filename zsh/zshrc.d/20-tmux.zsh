@@ -8,9 +8,9 @@ export TMUX_AUTO_EXIT=true
 if [[ -z "$INTELLIJ_TERMINAL" ]] && command -v tmux &> /dev/null && [ -n "$PS1" ] && [[ ! "$TERM" =~ screen ]] && [[ ! "$TERM" =~ tmux ]] && [ -z "$TMUX" ]; then
   if [[ "$TMUX_AUTO_EXIT" == "true" ]]; then
     # Exit terminal completely when tmux exits
-    exec tmux new-session -A -s main
+    exec tmux new-session
   else
     # Return to parent zsh when tmux exits
-    tmux new-session -A -s main
+    tmux new-session
   fi
 fi
