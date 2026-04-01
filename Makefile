@@ -2,42 +2,21 @@ SHELL := /bin/zsh
 
 # repo root (no trailing slash)
 REPO_DIR := $(shell dirname $(abspath $(lastword $(MAKEFILE_LIST))))
-ZSH_SRC := $(REPO_DIR)/zsh
-ZSH_DEST := $(XDG_CONFIG_HOME)/zsh
 
-$(info REPO_DIR=$(REPO_DIR))
-$(info ZSH_SRC=$(ZSH_SRC))
-$(info ZSH_DEST=$(ZSH_DEST))
+XDG_CONFIG_HOME   := $(HOME)/.config
+CLAUDE_CONFIG_DIR := $(XDG_CONFIG_HOME)/claude
+GEMINI_CONFIG_DIR := $(XDG_CONFIG_HOME)/gemini
+CODEX_CONFIG_DIR  := $(XDG_CONFIG_HOME)/codex
+ZSH_SRC           := $(REPO_DIR)/zsh
+ZSH_DEST          := $(XDG_CONFIG_HOME)/zsh
 
-ZSHENV_FILES := $(wildcard $(ZSH_SRC)/.zshenv $(HOME)/.zshenv)
-CACHE_FILE := .env.cache
-
-# Include the cache if it exists
--include $(CACHE_FILE)
-
-# Rule to generate the cache ONLY when .zshenv changes
-$(CACHE_FILE): $(ZSHENV_FILES)
-	@echo "Regenerating $(CACHE_FILE)..."
-	@echo "# Auto-generated config" > $@
-	@for f in $(ZSHENV_FILES); do . $$f >/dev/null 2>&1; done; \
-	 echo "XDG_CONFIG_HOME=$${XDG_CONFIG_HOME:-$(HOME)/.config}" >> $@; \
-	 echo "CLAUDE_CONFIG_DIR=$${CLAUDE_CONFIG_DIR:-$${XDG_CONFIG_HOME:-$(HOME)/.config}/claude}" >> $@; \
-	 echo "GEMINI_CONFIG_DIR=$${GEMINI_CONFIG_DIR:-$${XDG_CONFIG_HOME:-$(HOME)/.config}/gemini}" >> $@; \
-	 echo "CODEX_CONFIG_DIR=$${CODEX_HOME:-$${XDG_CONFIG_HOME:-$(HOME)/.config}/codex}" >> $@
-
-# Force Make to check the cache file at startup
-$(ZSHENV_FILES): ;
-
-# Fallbacks in case the cache hasn't been built yet (first run)
-XDG_CONFIG_HOME   ?= $(HOME)/.config
-CLAUDE_CONFIG_DIR ?= $(XDG_CONFIG_HOME)/claude
-GEMINI_CONFIG_DIR ?= $(XDG_CONFIG_HOME)/gemini
-CODEX_CONFIG_DIR  ?= $(XDG_CONFIG_HOME)/codex
-
-$(info XDG_CONFIG_HOME   = $(XDG_CONFIG_HOME))
+$(info XDG_CONFIG_HOME    = $(XDG_CONFIG_HOME))
 $(info CLAUDE_CONFIG_DIR  = $(CLAUDE_CONFIG_DIR))
 $(info GEMINI_CONFIG_DIR  = $(GEMINI_CONFIG_DIR))
 $(info CODEX_CONFIG_DIR   = $(CODEX_CONFIG_DIR))
+$(info REPO_DIR           = $(REPO_DIR))
+$(info ZSH_SRC            = $(ZSH_SRC))
+$(info ZSH_DEST           = $(ZSH_DEST))
 
 .PHONY: all zsh git claude gemini codex tmux
 
@@ -51,7 +30,7 @@ $(XDG_CONFIG_HOME)/.aliases: $(REPO_DIR)/.aliases
 
 zsh: hushlogin $(XDG_CONFIG_HOME)/.aliases
 	@mkdir -p "$(XDG_CONFIG_HOME)" "$(XDG_CONFIG_HOME)/zsh"
-	
+
 	@echo "Linking zsh files from $(ZSH_SRC) -> $(ZSH_DEST)"
 	
 	@echo "Mirroring $(ZSH_SRC) -> $(ZSH_DEST)"

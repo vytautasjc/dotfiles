@@ -1,4 +1,5 @@
-export PATH="$PATH:$HOME/bin"
+export PNPM_HOME="${XDG_DATA_HOME:-$HOME/.local/share}/pnpm"
+export PNPM_CONF_GLOBAL_BIN_DIR="$PNPM_HOME"
 
 export XDG_CONFIG_HOME="$HOME/.config"
 export XDG_DATA_HOME="$XDG_CONFIG_HOME/local/share"
@@ -16,7 +17,20 @@ export DOTFILES="$HOME/dotfiles"
 # Used by multi-user Nix setup
 export NIX_REMOTE=daemon
 
+export TMUX_AUTO_EXIT=true
+
 ZDOTDIR="$XDG_CONFIG_HOME/zsh"
+
+typeset -U path PATH
+
+path=(
+  "$PNPM_HOME"
+  "$HOME/bin"
+  "${XDG_DATA_HOME:-$HOME/.local/share}/fnm"
+  $path
+)
+
+export PATH
 
 if [ -s "$HOME/.zshenv.local" ]; then
     . "$HOME/.zshenv.local"

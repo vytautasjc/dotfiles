@@ -1,12 +1,4 @@
-# pnpm
-export PNPM_HOME="$XDG_CONFIG_HOME/local/share/pnpm"
-export PNPM_CONF_GLOBAL_BIN_DIR="$PNPM_HOME"
-
-case ":$PATH:" in
-  *":$PNPM_HOME:"*) ;;
-  *) export PATH="$PNPM_HOME:$PATH" ;;
-esac
-# pnpm end
+# nvm
 
 export NVM_DIR="$([ -z "${XDG_CONFIG_HOME-}" ] && printf %s "${HOME}/.nvm" || printf %s "${XDG_CONFIG_HOME}/nvm")"
 
@@ -44,6 +36,8 @@ if [ -s "$NVM_DIR/nvm.sh" ]; then
 
     nvm-switch
 fi
+
+# fnm
 
 if command -v fnm &> /dev/null; then
   eval "$(fnm env --corepack-enabled --use-on-cd --shell=zsh)"
