@@ -6,8 +6,12 @@ This repository contains my personal dotfiles for configuring my development env
 Clone this repository and symlink the relevant files to your home directory:
 
 ```sh
-make setup-all
-make setup-zshrc setup-git
+make all
+```
+
+Or for specific components:
+```sh
+make zsh git claude gemini codex tmux
 ```
 
 Using Home Manager:
@@ -57,10 +61,4 @@ To ensure SSH keys are loaded automatically and authenticated by the macOS keych
    }
    ```
 
-This setup ensures your default Node.js version is always loaded unless a project-specific `.nvmrc` is present. Otherwise, initially node binary will point to the `nvm alias default` version, and will not revert to default version if `.nvmrc` is not present.
-
-# To-Do
-
-- [ ] FNM with home manager for limadev
-- [ ] JDK setup with home manager
-- [ ] Use direnv for folder specific env (replace sdkman?)
+This setup ensures your default Node.js version is always loaded unless a project-specific `.nvmrc` or `.node-version` is present. Otherwise, initially node binary will point to the `nvm alias default` or `fnm default` version, and will not revert to default version if `.nvmrc` or `.node-version` is not present.
