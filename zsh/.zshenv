@@ -26,6 +26,7 @@ typeset -U path PATH
 path=(
   "$PNPM_HOME"
   "$HOME/bin"
+  "$HOME/.local/bin"
   "${XDG_DATA_HOME:-$HOME/.local/share}/fnm"
   $path
 )
