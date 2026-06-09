@@ -14,16 +14,3 @@ network_access = true
 [shell_environment_policy]
 inherit = "core"
 experimental_use_profile = true
-
-[mcp_servers.diff-review]
-command = "node"
-args = ["/home/limadev/.vscode-server/extensions/jinqishen.diff-review-0.3.0/out/mcp-server.js"]
-
-[mcp_servers.diff-review.tools.listDiffComments]
-approval_mode = "approve"
-
-[mcp_servers.diff-review.tools.replyToDiffComment]
-approval_mode = "approve"
-
-[mcp_servers.diff-review.tools.resolveDiffComment]
-approval_mode = "approve"
