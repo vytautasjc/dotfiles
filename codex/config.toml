@@ -1,9 +1,10 @@
 # Base settings
-model = "gpt-5.3-codex"
+model = "gpt-5.5"
 model_provider = "openai"
 sandbox_mode = "workspace-write"
 approval_policy = "on-failure"
-model_reasoning_effort = "high"
+model_reasoning_effort = "medium"
+model_verbosity = "high"
 
 # Enable network for API calls and package installation
 [sandbox_workspace_write]
@@ -14,36 +15,15 @@ network_access = true
 inherit = "core"
 experimental_use_profile = true
 
-# Development profile
-[profiles.dev]
-model_reasoning_effort = "xhigh"
-model_verbosity = "high"
-sandbox_mode = "workspace-write"
-approval_policy = "on-failure"
-experimental_use_profile = true
+[mcp_servers.diff-review]
+command = "node"
+args = ["/home/limadev/.vscode-server/extensions/jinqishen.diff-review-0.3.0/out/mcp-server.js"]
 
-# Pair programming profile
-[profiles.pair]
-model_reasoning_effort = "high"
-model_verbosity = "high"
-sandbox_mode = "workspace-write"
-approval_policy = "untrusted"
+[mcp_servers.diff-review.tools.listDiffComments]
+approval_mode = "approve"
 
-# Quick tasks profile
-[profiles.quick]
-model_reasoning_effort = "low"
-sandbox_mode = "workspace-write"
-approval_policy = "never"
+[mcp_servers.diff-review.tools.replyToDiffComment]
+approval_mode = "approve"
 
-# Analysis profile
-[profiles.analyze]
-sandbox_mode = "read-only"
-model_reasoning_effort = "xhigh"
-model_verbosity = "high"
-approval_policy = "never"
-
-# Automation profile
-[profiles.auto]
-sandbox_mode = "danger-full-access"
-approval_policy = "never"
-model_reasoning_summary = "auto"
+[mcp_servers.diff-review.tools.resolveDiffComment]
+approval_mode = "approve"

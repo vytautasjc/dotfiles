@@ -76,11 +76,20 @@ gemini: zsh
 codex: zsh
 	@mkdir -p "$(CODEX_CONFIG_DIR)"
 
-	@if [ -f "$(CODEX_CONFIG_DIR)/config.toml" ]; then \
+	@if [ -e "$(CODEX_CONFIG_DIR)/config.toml" ] || [ -L "$(CODEX_CONFIG_DIR)/config.toml" ]; then \
 		mv "$(CODEX_CONFIG_DIR)/config.toml" "$(CODEX_CONFIG_DIR)/config.toml.bak"; \
 	fi
 
 	@ln -sf "$(REPO_DIR)/codex/config.toml" "$(CODEX_CONFIG_DIR)/config.toml"
+
+	@for file in "$(REPO_DIR)/codex/"*.config.toml; do \
+		[ -e "$$file" ] || continue; \
+		target="$(CODEX_CONFIG_DIR)/$$(basename "$$file")"; \
+		if [ -e "$$target" ] || [ -L "$$target" ]; then \
+			mv "$$target" "$$target.bak"; \
+		fi; \
+		ln -sf "$$file" "$$target"; \
+	done
 
 	@echo "codex files linked"
 
