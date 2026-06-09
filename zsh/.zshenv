@@ -21,15 +21,18 @@ export TMUX_AUTO_EXIT=true
 
 export ZDOTDIR="$XDG_CONFIG_HOME/zsh"
 
-typeset -U path PATH
+# POSIX compatible
+path_prepend() {
+  case ":$PATH:" in
+    *":$1:"*) ;;
+    *) PATH="$1:$PATH" ;;
+  esac
+}
 
-path=(
-  "$PNPM_HOME"
-  "$HOME/bin"
-  "$HOME/.local/bin"
-  "${XDG_DATA_HOME:-$HOME/.local/share}/fnm"
-  $path
-)
+path_prepend "$PNPM_HOME"
+path_prepend "$HOME/bin"
+path_prepend "$HOME/.local/bin"
+path_prepend "$XDG_DATA_HOME/fnm"
 
 export PATH
 
