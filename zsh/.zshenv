@@ -29,7 +29,6 @@ path_prepend() {
   esac
 }
 
-path_prepend "$PNPM_HOME"
 path_prepend "$PNPM_CONF_GLOBAL_BIN_DIR"
 path_prepend "$HOME/bin"
 path_prepend "$HOME/.local/bin"
