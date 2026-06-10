@@ -3,7 +3,7 @@ export XDG_DATA_HOME="$XDG_CONFIG_HOME/local/share"
 export XDG_CACHE_HOME="$XDG_CONFIG_HOME/cache"
 
 export PNPM_HOME="${XDG_DATA_HOME:-$HOME/.local/share}/pnpm"
-export PNPM_CONF_GLOBAL_BIN_DIR="$PNPM_HOME/bin"
+export PNPM_CONF_GLOBAL_BIN_DIR="$PNPM_HOME"
 
 export CODEX_HOME="$XDG_CONFIG_HOME/codex"
 export CLAUDE_CONFIG_DIR="$XDG_CONFIG_HOME/claude"
@@ -29,7 +29,7 @@ path_prepend() {
   esac
 }
 
-path_prepend "$PNPM_CONF_GLOBAL_BIN_DIR"
+path_prepend "$PNPM_HOME"
 path_prepend "$HOME/bin"
 path_prepend "$HOME/.local/bin"
 path_prepend "$XDG_DATA_HOME/fnm"
