@@ -1,5 +1,5 @@
 model_reasoning_effort = "high"
-model_verbosity = "high"
+model_verbosity = "medium"
 sandbox_mode = "workspace-write"
 approval_policy = "on-request"
 experimental_use_profile = true

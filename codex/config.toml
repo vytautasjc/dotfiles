@@ -4,7 +4,7 @@ model_provider = "openai"
 sandbox_mode = "workspace-write"
 approval_policy = "on-request"
 model_reasoning_effort = "medium"
-model_verbosity = "high"
+model_verbosity = "medium"
 
 # Enable network for API calls and package installation
 [sandbox_workspace_write]
@@ -14,3 +14,10 @@ network_access = true
 [shell_environment_policy]
 inherit = "core"
 experimental_use_profile = true
+
+[tui]
+status_line = ["model-with-reasoning", "current-dir", "context-used", "five-hour-limit", "weekly-limit", "used-tokens"]
+status_line_use_colors = true
+
+[tui.model_availability_nux]
+"gpt-5.5" = 4
