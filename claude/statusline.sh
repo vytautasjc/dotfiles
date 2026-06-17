@@ -1,0 +1,96 @@
+#!/bin/bash
+# Claude Code status line
+# Format: <Model> <effort> | ctx: <pct>% | <used>k/<total>k | 5h: <pct>% T-<time> | 7d: <pct>% T-<time>
+# Example: Opus 4.7 high | ctx: 47.2% | 94.4k/200k | 5h: 32% T-20m38s | 7d: 18% T-23h44m
+
+CLAUDE_DIR="${CLAUDE_CONFIG_DIR:-$HOME/.claude}"
+
+BOLD='\033[1m'
+RESET='\033[0m'
+
+input=$(cat)
+
+# ── Model ──────────────────────────────────────────────────────────────────────
+MODEL=$(echo "$input" | jq -r '.model.display_name // "Unknown"')
+
+# ── Effort level ───────────────────────────────────────────────────────────────
+# Not yet in stdin JSON; read from env var, then settings.json, then default to "high"
+EFFORT="${CLAUDE_CODE_EFFORT_LEVEL:-}"
+if [ -z "$EFFORT" ]; then
+  SETTINGS="$CLAUDE_DIR/settings.json"
+  if [ -f "$SETTINGS" ]; then
+    EFFORT=$(jq -r '.effortLevel // empty' "$SETTINGS" 2>/dev/null)
+  fi
+fi
+EFFORT="${EFFORT:-high}"
+
+# ── Context window ─────────────────────────────────────────────────────────────
+CTX_PCT=$(echo "$input" | jq -r '.context_window.used_percentage // 0')
+CTX_SIZE=$(echo "$input" | jq -r '.context_window.context_window_size // 200000')
+CTX_USED=$(echo "$input" | jq -r '.context_window.total_input_tokens // 0')
+
+# Format token counts: show as k with one decimal, or M for >=1M
+fmt_tokens() {
+  local n=$1
+  if [ "$n" -ge 1000000 ] 2>/dev/null; then
+    echo "$(echo "scale=1; $n / 1000000" | bc)M"
+  elif [ "$n" -ge 1000 ] 2>/dev/null; then
+    echo "$(echo "scale=1; $n / 1000" | bc)k"
+  else
+    echo "${n}"
+  fi
+}
+
+USED_FMT=$(fmt_tokens "$CTX_USED")
+TOTAL_FMT=$(fmt_tokens "$CTX_SIZE")
+
+# ── Rate limit helper: seconds → XhYmZs (omit leading zero segments) ───────────
+fmt_duration() {
+  local secs=$1
+  if [ "$secs" -le 0 ] 2>/dev/null; then
+    echo "0s"
+    return
+  fi
+  local h=$((secs / 3600))
+  local m=$(( (secs % 3600) / 60 ))
+  local s=$((secs % 60))
+  local out=""
+  [ "$h" -gt 0 ] && out="${h}h"
+  [ "$m" -gt 0 ] && out="${out}${m}m"
+  [ "$s" -gt 0 ] || [ -z "$out" ] && out="${out}${s}s"
+  echo "$out"
+}
+
+# ── 5-hour rate limit ──────────────────────────────────────────────────────────
+FIVE_H_PCT=$(echo "$input" | jq -r '.rate_limits.five_hour.used_percentage // empty')
+FIVE_H_RESETS=$(echo "$input" | jq -r '.rate_limits.five_hour.resets_at // empty')
+
+if [ -n "$FIVE_H_PCT" ] && [ -n "$FIVE_H_RESETS" ]; then
+  NOW=$(date +%s)
+  FIVE_H_SECS=$(( FIVE_H_RESETS - NOW ))
+  FIVE_H_TIME=$(fmt_duration "$FIVE_H_SECS")
+  FIVE_H_INT=$(printf "%.0f" "$FIVE_H_PCT")
+  FIVE_H_STR="${FIVE_H_INT}% T-${FIVE_H_TIME}"
+else
+  FIVE_H_STR="N/A"
+fi
+
+# ── 7-day rate limit ───────────────────────────────────────────────────────────
+SEVEN_D_PCT=$(echo "$input" | jq -r '.rate_limits.seven_day.used_percentage // empty')
+SEVEN_D_RESETS=$(echo "$input" | jq -r '.rate_limits.seven_day.resets_at // empty')
+
+if [ -n "$SEVEN_D_PCT" ] && [ -n "$SEVEN_D_RESETS" ]; then
+  NOW=$(date +%s)
+  SEVEN_D_SECS=$(( SEVEN_D_RESETS - NOW ))
+  SEVEN_D_TIME=$(fmt_duration "$SEVEN_D_SECS")
+  SEVEN_D_INT=$(printf "%.0f" "$SEVEN_D_PCT")
+  SEVEN_D_STR="${SEVEN_D_INT}% T-${SEVEN_D_TIME}"
+else
+  SEVEN_D_STR="N/A"
+fi
+
+# ── Assemble ───────────────────────────────────────────────────────────────────
+# Format ctx percentage to one decimal
+CTX_PCT_FMT=$(printf "%.1f" "$CTX_PCT")
+
+echo -e "${BOLD}${MODEL}${RESET} ${EFFORT} | ${BOLD}ctx:${RESET} ${CTX_PCT_FMT}% | ${USED_FMT}/${TOTAL_FMT} | ${BOLD}5h:${RESET} ${FIVE_H_STR} | ${BOLD}7d:${RESET} ${SEVEN_D_STR}"
