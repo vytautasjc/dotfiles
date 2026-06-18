@@ -1,6 +1,6 @@
 #!/bin/bash
 # Claude Code status line
-# Format: <Model> <effort> | ctx: <pct>% | <used>k/<total>k | 5h: <pct>% T-<time> | 7d: <pct>% T-<time>
+# Format: <Model> | ctx: <pct>% | <used>k/<total>k | 5h: <pct>% T-<time> | 7d: <pct>% T-<time>
 # Example: Opus 4.7 high | ctx: 47.2% | 94.4k/200k | 5h: 32% T-20m38s | 7d: 18% T-23h44m
 
 CLAUDE_DIR="${CLAUDE_CONFIG_DIR:-$HOME/.claude}"
@@ -12,18 +12,6 @@ input=$(cat)
 
 # Model
 MODEL=$(echo "$input" | jq -r '.model.display_name // "Unknown"')
-
-# Effort level
-# Not yet in stdin JSON; read from env var, then settings.json, then 
-# default to "high"
-EFFORT="${CLAUDE_CODE_EFFORT_LEVEL:-}"
-if [ -z "$EFFORT" ]; then
-  SETTINGS="$CLAUDE_DIR/settings.json"
-  if [ -f "$SETTINGS" ]; then
-    EFFORT=$(jq -r '.effortLevel // empty' "$SETTINGS" 2>/dev/null)
-  fi
-fi
-EFFORT="${EFFORT:-high}"
 
 # Context window
 CTX_PCT=$(echo "$input" | jq -r '.context_window.used_percentage // 0')
@@ -96,4 +84,4 @@ fi
 # Format ctx percentage to one decimal
 CTX_PCT_FMT=$(printf "%.1f" "$CTX_PCT")
 
-echo -e "${BOLD}${MODEL}${RESET} ${EFFORT} | ${BOLD}ctx:${RESET} ${CTX_PCT_FMT}% | ${USED_FMT}/${TOTAL_FMT} | ${BOLD}5h:${RESET} ${FIVE_H_STR} | ${BOLD}7d:${RESET} ${SEVEN_D_STR}"
+echo -e "${BOLD}${MODEL}${RESET} | ${BOLD}ctx:${RESET} ${CTX_PCT_FMT}% | ${USED_FMT}/${TOTAL_FMT} | ${BOLD}5h:${RESET} ${FIVE_H_STR} | ${BOLD}7d:${RESET} ${SEVEN_D_STR}"
