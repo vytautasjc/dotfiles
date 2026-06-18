@@ -1,23 +1,22 @@
 {
   "permissions": {
     "allow": [
-      "Bash(npm run lint)",
-      "Bash(npm run type:check)",
-      "Bash(npm run build)",
-      "Bash(npm run test:*)",
+      "Bash(pnpm run lint)",
+      "Bash(pnpm run type:check)",
+      "Bash(pnpm run build)",
+      "Bash(pnpm run test:*)",
       "Read(~/.zshrc)",
       "Bash(git diff:*)"
     ],
     "ask": [
         "Bash(git commit:*)",
-        "Bash(git push:*)"
+        "Bash(git push:*)",
+        "Bash(curl:*)",
+        "Read(./.env)",
+        "Read(./.env.*)",
+        "Read(./secrets/**)"
     ],
-    "deny": [
-      "Bash(curl:*)",
-      "Read(./.env)",
-      "Read(./.env.*)",
-      "Read(./secrets/**)"
-    ]
+    "deny": []
   },
   "env": {
     "CLAUDE_CODE_ENABLE_TELEMETRY": "0",
