@@ -1,4 +1,6 @@
 {
+  "model": "sonnet",
+  "effortLevel": "high",
   "permissions": {
     "allow": [
       "Bash(pnpm run lint)",
@@ -9,12 +11,12 @@
       "Bash(git diff:*)"
     ],
     "ask": [
-        "Bash(git commit:*)",
-        "Bash(git push:*)",
-        "Bash(curl:*)",
-        "Read(./.env)",
-        "Read(./.env.*)",
-        "Read(./secrets/**)"
+      "Bash(git commit:*)",
+      "Bash(git push:*)",
+      "Bash(curl:*)",
+      "Read(./.env)",
+      "Read(./.env.*)",
+      "Read(./secrets/**)"
     ],
     "deny": []
   },
@@ -27,7 +29,7 @@
     "command": "${CLAUDE_CONFIG_DIR:-$HOME/.claude}/statusline.sh"
   },
   "sandbox": {
-    "enabled": true,
+    "enabled": false,
     "autoAllowBashIfSandboxed": true,
     "excludedCommands": ["docker"],
     "network": {
