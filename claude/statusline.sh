@@ -81,7 +81,11 @@ else
   SEVEN_D_STR="N/A"
 fi
 
+# Session cost
+COST_USD=$(echo "$input" | jq -r '.cost.total_cost_usd // 0')
+COST_STR=$(printf "\$%.2f" "$COST_USD")
+
 # Format ctx percentage to one decimal
 CTX_PCT_FMT=$(printf "%.1f" "$CTX_PCT")
 
-echo -e "${BOLD}${MODEL}${RESET} | ${BOLD}ctx:${RESET} ${CTX_PCT_FMT}% | ${USED_FMT}/${TOTAL_FMT} | ${BOLD}5h:${RESET} ${FIVE_H_STR} | ${BOLD}7d:${RESET} ${SEVEN_D_STR}"
+echo -e "${BOLD}${MODEL}${RESET} | ${BOLD}ctx:${RESET} ${CTX_PCT_FMT}% | ${USED_FMT}/${TOTAL_FMT} | ${BOLD}5h:${RESET} ${FIVE_H_STR} | ${BOLD}7d:${RESET} ${SEVEN_D_STR} | ${BOLD}Cost:${RESET} ${COST_STR}"
