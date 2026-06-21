@@ -1,7 +1,7 @@
 #!/bin/bash
 # Claude Code status line
-# Format: <Model> | ctx: <pct>% | <used>k/<total>k | 5h: <pct>% T-<time> | 7d: <pct>% T-<time>
-# Example: Opus 4.7 high | ctx: 47.2% | 94.4k/200k | 5h: 32% T-20m38s | 7d: 18% T-23h44m | cost: $26.47
+# Format: <Model> | ctx: <pct>% | <used>k/<total>k | 5h: <pct>% T-<time> | 7d: <pct>% T-<time> | cost: $<estimate value>
+# Example: Opus 4.7 | ctx: 47.2% | 94.4k/200k | 5h: 32% T-20m38s | 7d: 18% T-23h44m | cost: $26.47
 
 CLAUDE_DIR="${CLAUDE_CONFIG_DIR:-$HOME/.claude}"
 
