@@ -1,4 +1,5 @@
 SHELL := /bin/zsh
+TIMESTAMP := $(shell date +%Y%m%d_%H%M%S)
 
 # repo root (no trailing slash)
 REPO_DIR := $(shell dirname $(abspath $(lastword $(MAKEFILE_LIST))))
@@ -58,7 +59,16 @@ git: zsh
 claude: zsh
 	@mkdir -p "$(CLAUDE_CONFIG_DIR)"
 
+	@if [ -f "$(CLAUDE_CONFIG_DIR)/settings.json" ]; then \
+		mv "$(CLAUDE_CONFIG_DIR)/settings.json" "$(CLAUDE_CONFIG_DIR)/settings.json.bak.$(TIMESTAMP)"; \
+	fi
+
+	@if [ -f "$(CLAUDE_CONFIG_DIR)/statusline.sh" ]; then \
+		mv "$(CLAUDE_CONFIG_DIR)/statusline.sh" "$(CLAUDE_CONFIG_DIR)/statusline.sh.bak.$(TIMESTAMP)"; \
+	fi
+
 	@ln -sf "$(REPO_DIR)/claude/settings.json" "$(CLAUDE_CONFIG_DIR)/settings.json"
+	@ln -sf "$(REPO_DIR)/claude/statusline.sh" "$(CLAUDE_CONFIG_DIR)/statusline.sh"
 
 	@echo "claude files linked"
 
@@ -66,7 +76,7 @@ gemini: zsh
 	@mkdir -p "$(GEMINI_CONFIG_DIR)"
 
 	@if [ -f "$(GEMINI_CONFIG_DIR)/settings.json" ]; then \
-		mv "$(GEMINI_CONFIG_DIR)/settings.json" "$(GEMINI_CONFIG_DIR)/settings.json.bak"; \
+		mv "$(GEMINI_CONFIG_DIR)/settings.json" "$(GEMINI_CONFIG_DIR)/settings.json.bak.$(TIMESTAMP)"; \
 	fi
 
 	@ln -sf "$(REPO_DIR)/gemini/settings.json" "$(GEMINI_CONFIG_DIR)/settings.json"
@@ -77,7 +87,7 @@ codex: zsh
 	@mkdir -p "$(CODEX_CONFIG_DIR)"
 
 	@if [ -e "$(CODEX_CONFIG_DIR)/config.toml" ] || [ -L "$(CODEX_CONFIG_DIR)/config.toml" ]; then \
-		mv "$(CODEX_CONFIG_DIR)/config.toml" "$(CODEX_CONFIG_DIR)/config.toml.bak"; \
+		mv "$(CODEX_CONFIG_DIR)/config.toml" "$(CODEX_CONFIG_DIR)/config.toml.bak.$(TIMESTAMP)"; \
 	fi
 
 	@ln -sf "$(REPO_DIR)/codex/config.toml" "$(CODEX_CONFIG_DIR)/config.toml"
