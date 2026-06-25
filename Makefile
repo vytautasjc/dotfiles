@@ -67,7 +67,12 @@ claude: zsh
 		mv "$(CLAUDE_CONFIG_DIR)/statusline.sh" "$(CLAUDE_CONFIG_DIR)/statusline.sh.bak.$(TIMESTAMP)"; \
 	fi
 
+	@if [ -f "$(CLAUDE_CONFIG_DIR)/CLAUDE.md" ]; then \
+		mv "$(CLAUDE_CONFIG_DIR)/CLAUDE.md" "$(CLAUDE_CONFIG_DIR)/CLAUDE.md.bak.$(TIMESTAMP)"; \
+	fi
+
 	@ln -sf "$(REPO_DIR)/claude/settings.json" "$(CLAUDE_CONFIG_DIR)/settings.json"
+	@ln -sf "$(REPO_DIR)/claude/CLAUDE.md" "$(CLAUDE_CONFIG_DIR)/CLAUDE.md"
 	@ln -sf "$(REPO_DIR)/claude/statusline.sh" "$(CLAUDE_CONFIG_DIR)/statusline.sh"
 
 	@echo "claude files linked"
