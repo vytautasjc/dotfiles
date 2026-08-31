@@ -114,10 +114,3 @@ tmux: zsh
 	@ln -sf "$(REPO_DIR)/tmux/tmux.conf" "$(XDG_CONFIG_HOME)/tmux/tmux.conf"
 
 	@echo "tmux files linked"
-
-pnpm: zsh
-	@mkdir -p "$(XDG_CONFIG_HOME)/pnpm"
-
-	@ln -sf "$(REPO_DIR)/pnpm/config.yaml" "$(XDG_CONFIG_HOME)/pnpm/config.yaml"
-
-	@echo "pnpm files linked"
