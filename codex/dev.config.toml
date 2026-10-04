@@ -1,16 +1,12 @@
-model_reasoning_effort = "high"
-model_verbosity = "medium"
-sandbox_mode = "workspace-write"
-approval_policy = "on-request"
 model = "gpt-6.1-sol"
-
-[sandbox_workspace_write]
-network_access = true
-
-[projects."/mnt/lima-dev-data/development/personal/coide/main"]
+model_reasoning_effort = "medium"
+[projects."/mnt/lima-dev-data/development/personal/spring-refresh"]
 trust_level = "trusted"
 
 [projects."/mnt/lima-dev-data/development/personal/skills"]
+trust_level = "trusted"
+
+[projects."/mnt/lima-dev-data/development/personal/coide/main"]
 trust_level = "trusted"
 
 [notice]
@@ -21,4 +17,5 @@ screen_reader_detection_done = true
 
 [tui.model_availability_nux]
 "gpt-5.5" = 4
-"gpt-6.1-sol" = 3
+gpt-6-astra = 1
+"gpt-6.1-sol" = 4

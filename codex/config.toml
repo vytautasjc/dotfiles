@@ -21,3 +21,12 @@ status_line_use_colors = true
 
 [tui.model_availability_nux]
 "gpt-5.5" = 4
+
+[projects."/home/limadev"]
+trust_level = "trusted"
+
+[projects."/mnt/lima-dev-data/development/personal/coide"]
+trust_level = "trusted"
+
+[projects."/mnt/lima-dev-data/development/personal/coide/main"]
+trust_level = "trusted"
