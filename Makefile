@@ -91,6 +91,12 @@ gemini: zsh
 codex: zsh
 	@mkdir -p "$(CODEX_CONFIG_DIR)"
 
+	@if [ -f "$(CODEX_CONFIG_DIR)/AGENTS.md" ]; then \
+                mv "$(CODEX_CONFIG_DIR)/AGENTS.md" "$(CODEX_CONFIG_DIR)/AGENTS.md.bak.$(TIMESTAMP)"; \
+        fi
+
+	@ln -sf "$(REPO_DIR)/codex/AGENTS.md" "$(CODEX_CONFIG_DIR)/AGENTS.md"
+
 	@for template in "$(REPO_DIR)/codex/"*.template.toml; do \
 		[ -e "$$template" ] || continue; \
 		\
