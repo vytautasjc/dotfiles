@@ -91,22 +91,38 @@ gemini: zsh
 codex: zsh
 	@mkdir -p "$(CODEX_CONFIG_DIR)"
 
-	@if [ -e "$(CODEX_CONFIG_DIR)/config.toml" ] || [ -L "$(CODEX_CONFIG_DIR)/config.toml" ]; then \
-		mv "$(CODEX_CONFIG_DIR)/config.toml" "$(CODEX_CONFIG_DIR)/config.toml.bak.$(TIMESTAMP)"; \
-	fi
-
-	@ln -sf "$(REPO_DIR)/codex/config.toml" "$(CODEX_CONFIG_DIR)/config.toml"
-
-	@for file in "$(REPO_DIR)/codex/"*.config.toml; do \
-		[ -e "$$file" ] || continue; \
-		target="$(CODEX_CONFIG_DIR)/$$(basename "$$file")"; \
+	@for template in "$(REPO_DIR)/codex/"*.template.toml; do \
+		[ -e "$$template" ] || continue; \
+		\
+		base="$$(basename "$$template" .template.toml)"; \
+		target="$(CODEX_CONFIG_DIR)/$$base.toml"; \
+		backup="$$target.bak.$(TIMESTAMP)"; \
+		\
 		if [ -e "$$target" ] || [ -L "$$target" ]; then \
-			mv "$$target" "$$target.bak"; \
+			mv "$$target" "$$backup"; \
 		fi; \
-		ln -sf "$$file" "$$target"; \
+		\
+		cp "$$template" "$$target"; \
+		\
+		if [ -f "$$backup" ]; then \
+			printf '\n' >> "$$target"; \
+			awk '\
+				/^\[projects\."/ { \
+					in_project = 1; \
+					print; \
+					next; \
+				} \
+				/^\[/ { \
+					in_project = 0; \
+				} \
+				in_project { \
+					print; \
+				} \
+			' "$$backup" >> "$$target"; \
+		fi; \
 	done
 
-	@echo "codex files linked"
+	@echo "codex configs generated"
 
 tmux: zsh
 	@mkdir -p "$(XDG_CONFIG_HOME)/tmux"
