@@ -1,6 +1,8 @@
 {
-  "model": "sonnet",
-  "effortLevel": "high",
+  "env": {
+    "CLAUDE_CODE_ENABLE_TELEMETRY": "0",
+    "OTEL_METRICS_EXPORTER": "otlp"
+  },
   "permissions": {
     "allow": [
       "Bash(pnpm run lint)",
@@ -10,6 +12,7 @@
       "Read(~/.zshrc)",
       "Bash(git diff:*)"
     ],
+    "deny": [],
     "ask": [
       "Bash(git commit:*)",
       "Bash(git push:*)",
@@ -17,13 +20,9 @@
       "Read(./.env)",
       "Read(./.env.*)",
       "Read(./secrets/**)"
-    ],
-    "deny": []
+    ]
   },
-  "env": {
-    "CLAUDE_CODE_ENABLE_TELEMETRY": "0",
-    "OTEL_METRICS_EXPORTER": "otlp"
-  },
+  "model": "opus",
   "statusLine": {
     "type": "command",
     "command": "${CLAUDE_CONFIG_DIR:-$HOME/.claude}/statusline.sh"
@@ -31,12 +30,24 @@
   "sandbox": {
     "enabled": false,
     "autoAllowBashIfSandboxed": true,
-    "excludedCommands": ["docker"],
     "network": {
       "allowUnixSockets": [
         "/var/run/docker.sock"
       ],
       "allowLocalBinding": true
+    },
+    "excludedCommands": [
+      "docker"
+    ]
+  },
+  "effortLevel": "high",
+  "modelSettings": {
+    "claude-opus-5-5": {
+      "effortLevel": "medium"
+    },
+    "claude-sonnet-5-5": {
+      "effortLevel": "medium"
     }
-  }
+  },
+  "autoMemoryEnabled": false
 }
