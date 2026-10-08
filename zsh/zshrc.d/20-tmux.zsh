@@ -1,9 +1,11 @@
+TMUX_AUTO_START="${TMUX_AUTO_START:-true}"
+
 if [[ "$TERMINAL_EMULATOR" == "JetBrains-JediTerm" ]] || [[ -n "$INTELLIJ_ENVIRONMENT_READER" ]]; then
     export INTELLIJ_TERMINAL=1
 fi
 
-# Auto-start tmux and attach to existing session (but not in IntelliJ)
-if [[ -z "$INTELLIJ_TERMINAL" ]] && command -v tmux &> /dev/null && [ -n "$PS1" ] && [[ ! "$TERM" =~ screen ]] && [[ ! "$TERM" =~ tmux ]] && [ -z "$TMUX" ]; then
+# Auto-start tmux and attach to existing session (if enabled, and not in IntelliJ)
+if [[ "$TMUX_AUTO_START" == "true" || "$TMUX_AUTO_START" == "1" ]] && [[ -z "$INTELLIJ_TERMINAL" ]] && command -v tmux &> /dev/null && [ -n "$PS1" ] && [[ ! "$TERM" =~ screen ]] && [[ ! "$TERM" =~ tmux ]] && [ -z "$TMUX" ]; then
   if [[ "$TMUX_AUTO_EXIT" == "true" ]]; then
     # Exit terminal completely when tmux exits
     exec tmux new-session

@@ -16,6 +16,7 @@ export DOTFILES="$HOME/dotfiles"
 # Used by multi-user Nix setup
 export NIX_REMOTE=daemon
 
+export TMUX_AUTO_START=false
 export TMUX_AUTO_EXIT=true
 
 export ZDOTDIR="$XDG_CONFIG_HOME/zsh"
