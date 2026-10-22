@@ -33,7 +33,7 @@ fmt_tokens() {
 USED_FMT=$(fmt_tokens "$CTX_USED")
 TOTAL_FMT=$(fmt_tokens "$CTX_SIZE")
 
-# Rate limit time till reset helper: seconds → T-XdYh,T-XhYm T-XmYs 
+# Rate limit time till reset helper: seconds → T-XdYh,T-XhYm T-XmYs
 fmt_duration() {
   local secs=$1
   if [ "$secs" -le 0 ] 2>/dev/null; then
@@ -41,8 +41,8 @@ fmt_duration() {
     return
   fi
   local d=$((secs / 86400))
-  local h=$(( (secs % 86400) / 3600 ))
-  local m=$(( (secs % 3600) / 60 ))
+  local h=$(((secs % 86400) / 3600))
+  local m=$(((secs % 3600) / 60))
   local s=$((secs % 60))
   if [ "$d" -gt 0 ]; then
     echo "T-${d}d${h}h"
@@ -59,7 +59,7 @@ FIVE_H_RESETS=$(echo "$input" | jq -r '.rate_limits.five_hour.resets_at // empty
 
 if [ -n "$FIVE_H_PCT" ] && [ -n "$FIVE_H_RESETS" ]; then
   NOW=$(date +%s)
-  FIVE_H_SECS=$(( FIVE_H_RESETS - NOW ))
+  FIVE_H_SECS=$((FIVE_H_RESETS - NOW))
   FIVE_H_TIME=$(fmt_duration "$FIVE_H_SECS")
   FIVE_H_INT=$(printf "%.0f" "$FIVE_H_PCT")
   FIVE_H_STR="${FIVE_H_INT}% ${FIVE_H_TIME}"
@@ -73,7 +73,7 @@ SEVEN_D_RESETS=$(echo "$input" | jq -r '.rate_limits.seven_day.resets_at // empt
 
 if [ -n "$SEVEN_D_PCT" ] && [ -n "$SEVEN_D_RESETS" ]; then
   NOW=$(date +%s)
-  SEVEN_D_SECS=$(( SEVEN_D_RESETS - NOW ))
+  SEVEN_D_SECS=$((SEVEN_D_RESETS - NOW))
   SEVEN_D_TIME=$(fmt_duration "$SEVEN_D_SECS")
   SEVEN_D_INT=$(printf "%.0f" "$SEVEN_D_PCT")
   SEVEN_D_STR="${SEVEN_D_INT}% ${SEVEN_D_TIME}"
@@ -88,4 +88,8 @@ COST_STR=$(printf "\$%.2f" "$COST_USD")
 # Format ctx percentage to one decimal
 CTX_PCT_FMT=$(printf "%.1f" "$CTX_PCT")
 
-echo -e "${BOLD}${MODEL}${RESET} | ${BOLD}ctx:${RESET} ${CTX_PCT_FMT}% | ${USED_FMT}/${TOTAL_FMT} | ${BOLD}5h:${RESET} ${FIVE_H_STR} | ${BOLD}7d:${RESET} ${SEVEN_D_STR} | ${BOLD}cost:${RESET} ${COST_STR}"
+# Ponytail level
+PT_MODE=$(head -n1 "$CLAUDE_DIR/.ponytail-active" 2>/dev/null | tr -d '[:space:]')
+PT_STR=${PT_MODE:+ | ${BOLD}pony:${RESET} ${PT_MODE}}
+
+echo -e "${BOLD}${MODEL}${RESET} | ${BOLD}ctx:${RESET} ${CTX_PCT_FMT}% ${USED_FMT}/${TOTAL_FMT} | ${BOLD}5h:${RESET} ${FIVE_H_STR} | ${BOLD}7d:${RESET} ${SEVEN_D_STR} | ${BOLD}cost:${RESET} ${COST_STR}${PT_STR}"
